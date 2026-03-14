@@ -1,9 +1,9 @@
 var StatusEtapa;
 (function (StatusEtapa) {
-    StatusEtapa[StatusEtapa["Planejamento"] = 0] = "Planejamento";
-    StatusEtapa[StatusEtapa["Revisao"] = 1] = "Revisao";
-    StatusEtapa[StatusEtapa["Validacao"] = 2] = "Validacao";
-    StatusEtapa[StatusEtapa["Concluido"] = 3] = "Concluido";
-    StatusEtapa[StatusEtapa["EmEspera"] = 4] = "EmEspera";
+    StatusEtapa["Planejamento"] = "Planejamento";
+    StatusEtapa["Revisao"] = "Revis\u00E3o";
+    StatusEtapa["Validacao"] = "Valida\u00E7\u00E3o";
+    StatusEtapa["Concluido"] = "Concluido";
+    StatusEtapa["EmEspera"] = "Em Espera";
 })(StatusEtapa || (StatusEtapa = {}));
 export default StatusEtapa;

@@ -1,10 +1,10 @@
 enum TipoTeste {
-  Simulacao,
-  Estrutural,
-  Voo,
-  Motor,
-  Sistema,
-  Certificacao,
+  Simulacao = "Simulacao",
+  Estrutural = "Estrutural",
+  Voo = "Voo",
+  Motor = "Motor",
+  Sistema = "Sistema",
+  Certificacao = "Certificação",
 }
 
 export default TipoTeste;
