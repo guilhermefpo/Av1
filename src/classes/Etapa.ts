@@ -1,25 +1,25 @@
 import StatusEtapa from "../enums/StatusEtapa.js";
 
 export default class Etapa {
-  statusEtapa: StatusEtapa;
+  etapa: StatusEtapa;
 
   constructor() {
-    this.statusEtapa = StatusEtapa.Planejamento;
+    this.etapa = StatusEtapa.Planejamento;
   }
 
   revisao() {
-    this.statusEtapa = StatusEtapa.Revisao;
+    this.etapa = StatusEtapa.Revisao;
   }
 
   validacao() {
-    this.statusEtapa = StatusEtapa.Validacao;
+    this.etapa = StatusEtapa.Validacao;
   }
 
   concluido() {
-    this.statusEtapa = StatusEtapa.Concluido;
+    this.etapa = StatusEtapa.Concluido;
   }
 
   espera() {
-    this.statusEtapa = StatusEtapa.EmEspera;
+    this.etapa = StatusEtapa.EmEspera;
   }
 }

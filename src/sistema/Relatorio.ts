@@ -18,7 +18,7 @@ export default class Relatorio {
 
     console.log("\n Etapas:");
     ger.etapa.forEach((e) => {
-      console.log(`- ${e.statusEtapa}`);
+      console.log(`- ${e.etapa}`);
     });
 
     console.log("\n Testes:");
