@@ -15,14 +15,14 @@ const rl = readline.createInterface({
 const aeronave = new Aeronave("A001", "Boeing 737");
 const ger = new GerenciadorAeronave(aeronave);
 const relatorio = new Relatorio();
-
 function iniciar() {
   console.log("\n=== Sistema Aeronáutico ===");
   console.log("Comandos:");
-  console.log("funcionario nome idade");
+  console.log("funcionario id nome idade");
   console.log("peca nome");
   console.log("etapa nome");
   console.log("teste tipo");
+  console.log("removerFuncionario id");
   console.log("relatorio");
   console.log("sair");
 
@@ -37,15 +37,26 @@ function iniciar() {
     const comando = partes[0]?.toLowerCase();
 
     if (comando === "funcionario") {
+      const id = partes[1];
       const idade = Number(partes[partes.length - 1]);
-      const nome = partes.slice(1, partes.length - 1).join(" ");
+      const nome = partes.slice(2, partes.length - 1).join(" ");
 
-      const f = new Funcionario(`${nome}`, idade);
+      if (!nome) {
+        console.log("Nome Obrigatório.");
+        return iniciar();
+      }
+
+      if (isNaN(idade)) {
+        console.log("Idade Inválida.");
+        return iniciar();
+      }
+
+      const f = new Funcionario(`${id}`, nome, idade);
       ger.adicionarFuncionario(f);
 
       console.log("Funcionário adicionado.");
     } else if (comando === "peca") {
-      const nome = partes[1];
+      const nome = partes.slice(1).join(" ");
 
       const p = new Peca(`${nome}`);
       ger.adicionarPeca(p);
@@ -61,6 +72,23 @@ function iniciar() {
       ger.adicionarTeste(t);
 
       console.log("Teste adicionado.");
+    } else if (comando === "removerfuncionario") {
+      const id = partes[1];
+
+      if (!id) {
+        console.log("Informe o id do funcionário.");
+        return iniciar();
+      }
+
+      const funcionarioExiste = ger.funcionarios.some((f) => f.id === id);
+
+      if (!funcionarioExiste) {
+        console.log("Funcionário não existe.");
+        return iniciar();
+      }
+
+      ger.removerFuncionario(id);
+      console.log("Funcionário removido.");
     } else if (comando === "relatorio") {
       relatorio.gerar(ger);
     } else {

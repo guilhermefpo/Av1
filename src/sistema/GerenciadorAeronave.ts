@@ -19,6 +19,10 @@ export default class GerenciadorAeronave {
     this.funcionarios.push(funcionario);
   }
 
+  removerFuncionario(id: string) {
+    this.funcionarios = this.funcionarios.filter((f) => f.id !== id);
+  }
+
   adicionarPeca(peca: Peca) {
     this.pecas.push(peca);
   }
