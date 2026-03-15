@@ -1,8 +1,10 @@
 import StatusPeca from "../enums/StatusPeca.js";
 export default class Peca {
+    id;
     nome;
     status;
-    constructor(nome) {
+    constructor(id, nome) {
+        this.id = id;
         this.nome = nome;
         this.status = StatusPeca.Disponivel;
     }

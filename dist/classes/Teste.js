@@ -1,7 +1,9 @@
 import TipoTeste from "../enums/TipoTeste.js";
 export default class Teste {
+    id;
     tipo;
-    constructor() {
+    constructor(id) {
+        this.id = id;
         this.tipo = TipoTeste.Simulacao;
     }
     estrutural() {

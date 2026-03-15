@@ -35,6 +35,18 @@ export default class GerenciadorAeronave {
     this.testes.push(teste);
   }
 
+  removerPeca(id: string) {
+    this.pecas = this.pecas.filter((p) => p.id !== id);
+  }
+
+  removerEtapa(id: string) {
+    this.etapa = this.etapa.filter((e) => e.id !== id);
+  }
+
+  removerTeste(id: string) {
+    this.testes = this.testes.filter((t) => t.id !== id);
+  }
+
   listarFuncionarios() {
     return this.funcionarios.map((f) => f.nome);
   } // De Museo - Bad Bunny

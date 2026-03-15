@@ -13,6 +13,10 @@ const rl = readline.createInterface({
 const aeronave = new Aeronave("A001", "Boeing 737");
 const ger = new GerenciadorAeronave(aeronave);
 const relatorio = new Relatorio();
+// Contadores para gerar IDs automáticos
+let contadorPeca = 1;
+let contadorEtapa = 1;
+let contadorTeste = 1;
 function iniciar() {
     console.log("\n=== Sistema Aeronáutico ===");
     console.log("Comandos:");
@@ -21,6 +25,9 @@ function iniciar() {
     console.log("etapa nome");
     console.log("teste tipo");
     console.log("removerFuncionario id");
+    console.log("removerPeca id");
+    console.log("removerEtapa id");
+    console.log("removerTeste id");
     console.log("relatorio");
     console.log("sair");
     rl.question("\nDigite comando: ", (entrada) => {
@@ -29,49 +36,110 @@ function iniciar() {
             rl.close();
             return;
         }
-        const partes = entrada.split(" ");
+        const partes = entrada.trim().split(/\s+/);
         const comando = partes[0]?.toLowerCase();
+        // ===== COMANDOS =====
         if (comando === "funcionario") {
             const id = partes[1];
             const idade = Number(partes[partes.length - 1]);
             const nome = partes.slice(2, partes.length - 1).join(" ");
-            if (!nome) {
-                console.log("Nome Obrigatório.");
+            if (!id || !nome) {
+                console.log("ID ou Nome inválido.");
                 return iniciar();
             }
             if (isNaN(idade)) {
-                console.log("Idade Inválida.");
+                console.log("Idade inválida.");
                 return iniciar();
             }
-            const f = new Funcionario(`${id}`, nome, idade);
+            const f = new Funcionario(id, nome, idade);
             ger.adicionarFuncionario(f);
             console.log("Funcionário adicionado.");
         }
         else if (comando === "peca") {
             const nome = partes.slice(1).join(" ");
-            const p = new Peca(`${nome}`);
+            if (!nome) {
+                console.log("Nome da peça obrigatório.");
+                return iniciar();
+            }
+            const id = `P${contadorPeca++}`;
+            const p = new Peca(id, nome); // ID primeiro, nome depois
             ger.adicionarPeca(p);
-            console.log("Peça adicionada.");
+            console.log(`Peça adicionada com ID ${p.id} e nome ${p.nome}.`);
+        }
+        else if (comando === "removerpeca") {
+            const id = partes[1];
+            if (!id) {
+                console.log("Informe o ID da peça.");
+                return iniciar();
+            }
+            const existe = ger.pecas.find((p) => p.id === id);
+            if (!existe) {
+                console.log("Peça não encontrada.");
+                return iniciar();
+            }
+            ger.removerPeca(id);
+            console.log("Peça removida.");
         }
         else if (comando === "etapa") {
-            const e = new Etapa();
+            const nome = partes.slice(1).join(" ");
+            if (!nome) {
+                console.log("Nome da etapa obrigatório.");
+                return iniciar();
+            }
+            const id = `E${contadorEtapa++}`;
+            const e = new Etapa(id, nome);
             ger.adicionarEtapa(e);
-            console.log("Etapa adicionada.");
+            console.log(`Etapa adicionada com ID ${e.id}, nome: ${e.nome}.`);
+        }
+        else if (comando === "removeretapa") {
+            const id = partes[1];
+            if (!id) {
+                console.log("Informe o ID da etapa.");
+                return iniciar();
+            }
+            const existe = ger.etapa.find((e) => e.id === id);
+            if (!existe) {
+                console.log("Etapa não encontrada.");
+                return iniciar();
+            }
+            ger.removerEtapa(id);
+            console.log("Etapa removida.");
         }
         else if (comando === "teste") {
-            const t = new Teste();
+            const tipoInput = partes.slice(1).join(" ");
+            if (!tipoInput) {
+                console.log("Tipo do teste obrigatório.");
+                return iniciar();
+            }
+            const id = `T${contadorTeste++}`;
+            const t = new Teste(id); // ID primeiro
+            const ttipo = tipoInput; // Atribui o tipo depois
             ger.adicionarTeste(t);
-            console.log("Teste adicionado.");
+            console.log(`Teste adicionado com ID ${t.id}, tipo: ${ttipo}.`);
+        }
+        else if (comando === "removerteste") {
+            const id = partes[1];
+            if (!id) {
+                console.log("Informe o ID do teste.");
+                return iniciar();
+            }
+            const existe = ger.testes.find((t) => t.id === id);
+            if (!existe) {
+                console.log("Teste não encontrado.");
+                return iniciar();
+            }
+            ger.removerTeste(id);
+            console.log("Teste removido.");
         }
         else if (comando === "removerfuncionario") {
             const id = partes[1];
             if (!id) {
-                console.log("Informe o id do funcionário.");
+                console.log("Informe o ID do funcionário.");
                 return iniciar();
             }
-            const funcionarioExiste = ger.funcionarios.some((f) => f.id === id);
-            if (!funcionarioExiste) {
-                console.log("Funcionário não existe.");
+            const existe = ger.funcionarios.find((f) => f.id === id);
+            if (!existe) {
+                console.log("Funcionário não encontrado.");
                 return iniciar();
             }
             ger.removerFuncionario(id);
