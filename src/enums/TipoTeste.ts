@@ -1,10 +1,5 @@
-enum TipoTeste {
-  Simulacao = "Simulacao",
-  Estrutural = "Estrutural",
-  Voo = "Voo",
-  Motor = "Motor",
-  Sistema = "Sistema",
-  Certificacao = "Certificação",
+export enum TipoTeste {
+  eletrico = "Elétrico",
+  hidraulico = "Hidráulici",
+  aerodinamico = "Aerodinamico",
 }
-
-export default TipoTeste;

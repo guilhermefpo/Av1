@@ -1,10 +1,6 @@
-var TipoTeste;
+export var TipoTeste;
 (function (TipoTeste) {
-    TipoTeste["Simulacao"] = "Simulacao";
-    TipoTeste["Estrutural"] = "Estrutural";
-    TipoTeste["Voo"] = "Voo";
-    TipoTeste["Motor"] = "Motor";
-    TipoTeste["Sistema"] = "Sistema";
-    TipoTeste["Certificacao"] = "Certifica\u00E7\u00E3o";
+    TipoTeste["eletrico"] = "El\u00E9trico";
+    TipoTeste["hidraulico"] = "Hidr\u00E1ulici";
+    TipoTeste["aerodinamico"] = "Aerodinamico";
 })(TipoTeste || (TipoTeste = {}));
-export default TipoTeste;

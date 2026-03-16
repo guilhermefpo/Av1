@@ -1,4 +1,4 @@
-import TipoTeste from "../enums/TipoTeste.js";
+import TipoTeste from "../enums/StatusTeste.js";
 export default class Teste {
     id;
     tipo;
