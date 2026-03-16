@@ -108,7 +108,7 @@ git clone https://github.com/guilhermefpo/Av1.git
 ### 2️⃣ Entrar na pasta do projeto
 
 ```bash
-cd Av1
+cd av1_gerson
 ```
 
 ### 3️⃣ Instalar as dependências
