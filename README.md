@@ -68,14 +68,13 @@ dentro de uma **empresa aeronáutica**, utilizando um sistema simples baseado em
 ```
 📦 project-root
 ├── 📂 dist
-│
 ├── 📂 src
 │   ├── 📂 classes
 │   │   ├── 📄 Aeronave.ts
-│   │   ├── 📄 Etapa.ts
-│   │   ├── 📄 Funcionario.ts
 │   │   ├── 📄 Peca.ts
+│   │   ├── 📄 Etapa.ts
 │   │   ├── 📄 Teste.ts
+│   │   ├── 📄 Funcionario.ts
 │   │   └── 📄 index.ts
 │   │
 │   ├── 📂 enums
@@ -84,6 +83,9 @@ dentro de uma **empresa aeronáutica**, utilizando um sistema simples baseado em
 │   │   ├── 📄 TipoAeronave.ts
 │   │   ├── 📄 TipoPeca.ts
 │   │   ├── 📄 TipoTeste.ts
+│   │   ├── 📄 StatusPeca.ts
+│   │   ├── 📄 StatusEtapa.ts
+│   │   ├── 📄 StatusTeste.ts
 │   │   └── 📄 index.ts
 │   │
 │   ├── 📂 sistema
@@ -96,7 +98,6 @@ dentro de uma **empresa aeronáutica**, utilizando um sistema simples baseado em
 ├── 📄 tsconfig.json
 ├── 📄 package.json
 └── 📄 README.md
-
 ```
 
 ⚠️ _A estrutura do projeto pode sofrer alterações futuras conforme o desenvolvimento._
