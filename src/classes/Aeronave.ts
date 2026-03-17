@@ -1,12 +1,18 @@
+import type { Etapa, Teste } from "./index.js";
+import type Peca from "./Peca.js";
+
 export default class Aeronave {
-  codigo: number;
+  codigo: string;
   modelo: string;
   tipo: string;
   capacidade: number;
   alcance: number;
-  listaObjetos: any[] = [];
+  pecas: Peca[] = [];
+  etapas: Etapa[] = [];
+  testes: Teste[] = [];
+
   constructor(
-    codigo: number,
+    codigo: string,
     modelo: string,
     tipo: string,
     capacidade: number,
@@ -17,5 +23,13 @@ export default class Aeronave {
     this.tipo = tipo;
     this.capacidade = capacidade;
     this.alcance = alcance;
+  }
+
+  exibirDetalhes() {
+    console.log(`Código: ${this.codigo}`);
+    console.log(`Modelo: ${this.modelo}`);
+    console.log(`Tipo: ${this.tipo}`);
+    console.log(`Capacidade: ${this.capacidade}`);
+    console.log(`Alcance: ${this.alcance}`);
   }
 }

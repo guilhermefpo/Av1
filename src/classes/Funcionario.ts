@@ -1,18 +1,22 @@
+import { NivelPermissao } from "../enums/NivelPermissao.js";
+
 export default class Funcionario {
   id: string;
   nome: string;
-  telefone: number;
+  telefone: string;
   endereco: string;
   usuario: string;
-  senha: number;
+  senha: string;
+  private _nivelPermissao: NivelPermissao;
 
   constructor(
     id: string,
     nome: string,
-    telefone: number,
+    telefone: string,
     endereco: string,
     usuario: string,
-    senha: number,
+    senha: string,
+    nivelPermissao: NivelPermissao,
   ) {
     this.id = id;
     this.nome = nome;
@@ -20,5 +24,10 @@ export default class Funcionario {
     this.endereco = endereco;
     this.usuario = usuario;
     this.senha = senha;
+    this._nivelPermissao = nivelPermissao;
+  }
+
+  get nivelPermissao(): NivelPermissao {
+    return this._nivelPermissao;
   }
 }

@@ -1,0 +1,5 @@
+export enum StatusTeste {
+  PENDENTE = "PENDENTE",
+  ANDAMENTO = "ANDAMENTO",
+  CONCLUIDO = "CONCLUIDO",
+}

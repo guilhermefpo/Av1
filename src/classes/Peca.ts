@@ -1,13 +1,28 @@
-export default class Peca {
-  nome: string;
-  tipo: string;
-  fornecedor: string;
-  status: string;
+import { StatusPeca } from "../enums/StatusPeca.js";
+import { TipoPeca } from "../enums/TipoPeca.js";
 
-  constructor(nome: string, tipo: string, fornecedor: string, status: string) {
+export default class Peca {
+  id: string;
+  nome: string;
+  tipo: TipoPeca;
+  fornecedor: string;
+  status: StatusPeca;
+
+  constructor(
+    id: string,
+    nome: string,
+    _tipo: TipoPeca,
+    fornecedor: string,
+    _status: StatusPeca,
+  ) {
+    this.id = id;
     this.nome = nome;
-    this.tipo = tipo;
+    this.tipo = _tipo;
     this.fornecedor = fornecedor;
-    this.status = status;
+    this.status = _status;
+  }
+
+  get visualizarStatus() {
+    return this.status;
   }
 }
