@@ -9,7 +9,7 @@ export default class Teste {
     this.resultado = resultado;
   }
 
-  get visualizarTeste() {
+  get visualizarTeste(): TipoTeste {
     return this._tipo;
   }
 }

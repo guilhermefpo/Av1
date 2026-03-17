@@ -22,7 +22,11 @@ export default class Peca {
     this.status = _status;
   }
 
-  get visualizarStatus() {
+  get visualizarStatus(): StatusPeca {
     return this.status;
+  }
+
+  get visualizarPeca(): TipoPeca {
+    return this.tipo;
   }
 }
