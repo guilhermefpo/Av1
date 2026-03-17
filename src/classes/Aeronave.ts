@@ -1,10 +1,11 @@
 import type { Etapa, Teste } from "./index.js";
 import type Peca from "./Peca.js";
+import { TipoAeronave } from "../enums/TipoAeronave.js";
 
 export default class Aeronave {
   codigo: string;
   modelo: string;
-  tipo: string;
+  tipo: TipoAeronave;
   capacidade: number;
   alcance: number;
   pecas: Peca[] = [];
@@ -14,7 +15,7 @@ export default class Aeronave {
   constructor(
     codigo: string,
     modelo: string,
-    tipo: string,
+    tipo: TipoAeronave,
     capacidade: number,
     alcance: number,
   ) {
