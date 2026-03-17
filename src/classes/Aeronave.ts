@@ -1,9 +1,21 @@
 export default class Aeronave {
-  public codigo: string;
-  public modelo: string;
-
-  constructor(codigo: string, modelo: string) {
+  codigo: number;
+  modelo: string;
+  tipo: string;
+  capacidade: number;
+  alcance: number;
+  listaObjetos: any[] = [];
+  constructor(
+    codigo: number,
+    modelo: string,
+    tipo: string,
+    capacidade: number,
+    alcance: number,
+  ) {
     this.codigo = codigo;
     this.modelo = modelo;
+    this.tipo = tipo;
+    this.capacidade = capacidade;
+    this.alcance = alcance;
   }
 }

@@ -1,4 +1,4 @@
 export enum ResultadoTeste {
-  aprovado = "Aprovado",
-  reprovado = "Reprovado",
+  APROVADO = "APROVADO",
+  REPROVADO = "REPROVADO",
 }

@@ -1,4 +1,4 @@
-import Aeronave from "../classes/Aeronave.js";
+/* import Aeronave from "../classes/Aeronave.js";
 import Funcionario from "../classes/Funcionario.js";
 import Peca from "../classes/Peca.js";
 import Etapa from "../classes/Etapa.js";
@@ -55,3 +55,4 @@ export default class GerenciadorAeronave {
     return this.pecas.map((p) => `${p.nome} (${p.status})`);
   }
 }
+ */

@@ -65,32 +65,38 @@ dentro de uma **empresa aeronáutica**, utilizando um sistema simples baseado em
 
 # 📂 Estrutura do Projeto
 
-```text
+```
 📦 project-root
 ├── 📂 dist
 │
-└── 📂 src
-    ├── 📂 classes
-    │   ├── 📄 Aeronave.ts
-    │   ├── 📄 Funcionario.ts
-    │   ├── 📄 Peca.ts
-    │   ├── 📄 Etapa.ts
-    │   └── 📄 Teste.ts
-    │
-    ├── 📂 enums
-    │   ├── 📄 TipoAeronave.ts
-    │   ├── 📄 TipoPeca.ts
-    │   ├── 📄 StatusPeca.ts
-    │   ├── 📄 StatusEtapa.ts
-    │   ├── 📄 TipoTeste.ts
-    │   ├── 📄 ResultadoTeste.ts
-    │   └── 📄 NivelPermissao.ts
-    │
-    ├── 📂 sistema
-    │   ├── 📄 GerenciadorAeronave.ts
-    │   └── 📄 Relatorio.ts
-    │
-    └── 📄 main.ts
+├── 📂 src
+│   ├── 📂 classes
+│   │   ├── 📄 Aeronave.ts
+│   │   ├── 📄 Etapa.ts
+│   │   ├── 📄 Funcionario.ts
+│   │   ├── 📄 Peca.ts
+│   │   ├── 📄 Teste.ts
+│   │   └── 📄 index.ts
+│   │
+│   ├── 📂 enums
+│   │   ├── 📄 NivelPermissao.ts
+│   │   ├── 📄 ResultadoTeste.ts
+│   │   ├── 📄 TipoAeronave.ts
+│   │   ├── 📄 TipoPeca.ts
+│   │   ├── 📄 TipoTeste.ts
+│   │   └── 📄 index.ts
+│   │
+│   ├── 📂 sistema
+│   │   ├── 📄 GerenciadorAeronave.ts
+│   │   ├── 📄 Relatorio.ts
+│   │   └── 📄 index.ts
+│   │
+│   └── 📄 main.ts
+│
+├── 📄 tsconfig.json
+├── 📄 package.json
+└── 📄 README.md
+
 ```
 
 ⚠️ _A estrutura do projeto pode sofrer alterações futuras conforme o desenvolvimento._

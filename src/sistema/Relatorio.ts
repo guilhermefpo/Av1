@@ -1,4 +1,4 @@
-import GerenciadorAeronave from "./GerenciadorAeronave.js";
+/* import GerenciadorAeronave from "./GerenciadorAeronave.js";
 
 export default class Relatorio {
   gerar(ger: GerenciadorAeronave) {
@@ -27,3 +27,4 @@ export default class Relatorio {
     });
   }
 }
+ */
