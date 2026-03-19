@@ -1,6 +1,7 @@
 import type { Etapa, Teste } from "./index.js";
 import type Peca from "./Peca.js";
 import { TipoAeronave } from "../enums/TipoAeronave.js";
+import Funcionario from "./Funcionario.js";
 import { NivelPermissao } from "../enums/NivelPermissao.js";
 
 export default class Aeronave {
@@ -28,46 +29,53 @@ export default class Aeronave {
   }
 
   exibirDetalhes() {
-    console.log(`Código: ${this.codigo}`);
-    console.log(`Modelo: ${this.modelo}`);
-    console.log(`Tipo: ${this.tipo}`);
-    console.log(`Capacidade: ${this.capacidade}`);
-    console.log(`Alcance: ${this.alcance}`);
+    return `${this.codigo}
+       ${this.modelo}
+       ${this.tipo}
+       ${this.capacidade}
+       ${this.alcance}
+      `;
   }
 
-  adicionarPecaPorFuncionario(peca: Peca) {
-    if (!NivelPermissao.ADMINISTRADOR) {
+  adicionarPecaPorFuncionario(peca: Peca, funcionario: Funcionario) {
+    if (funcionario.nivelPermissao === NivelPermissao.ADMINISTRADOR) {
       this._pecas.push(peca);
     } else {
-      throw new Error("Permissão insuficiente.");
+      throw new Error(
+        "Permissão insuficiente: somente administradores podem adicionar peças.",
+      );
     }
   }
 
-  adicionarEtapaPorFuncionario(etapa: Etapa) {
-    if (!NivelPermissao.ADMINISTRADOR) {
+  adicionarEtapaPorFuncionario(etapa: Etapa, funcionario: Funcionario) {
+    if (funcionario.nivelPermissao === NivelPermissao.ADMINISTRADOR) {
       this._etapas.push(etapa);
     } else {
-      throw new Error("Permissão insuficiente.");
+      throw new Error(
+        "Permissão insuficiente: somente administradores podem adicionar peças.",
+      );
     }
   }
 
-  adicionarTestePorFuncionario(teste: Teste) {
-    if (!NivelPermissao.ADMINISTRADOR) {
+  adicionarTestePorFuncionario(teste: Teste, funcionario: Funcionario) {
+    if (funcionario.nivelPermissao === NivelPermissao.ADMINISTRADOR) {
       this._testes.push(teste);
     } else {
-      throw new Error("Permissão insuficiente.");
+      throw new Error(
+        "Permissão insuficiente: somente administradores podem adicionar peças.",
+      );
     }
   }
 
-  get pecas(): ReadonlyArray<Peca> {
+  get pecas(): Peca[] {
     return this._pecas;
   }
 
-  get etapas(): ReadonlyArray<Etapa> {
+  get etapas(): Etapa[] {
     return this._etapas;
   }
 
-  get testes(): ReadonlyArray<Teste> {
+  get testes(): Teste[] {
     return this._testes;
   }
 }
