@@ -1,7 +1,7 @@
 import type { Etapa, Teste } from "./index.js";
 import type Peca from "./Peca.js";
 import { TipoAeronave } from "../enums/TipoAeronave.js";
-import Funcionario from "./Funcionario.js";
+import { NivelPermissao } from "../enums/NivelPermissao.js";
 
 export default class Aeronave {
   codigo: string;
@@ -35,45 +35,39 @@ export default class Aeronave {
     console.log(`Alcance: ${this.alcance}`);
   }
 
-  adicionarPecaPorFuncionario(peca: Peca, funcionario: Funcionario) {
-    if (funcionario.nivelPermissao === "ADMINISTRADOR") {
+  adicionarPecaPorFuncionario(peca: Peca) {
+    if (!NivelPermissao.ADMINISTRADOR) {
       this._pecas.push(peca);
     } else {
-      console.log(
-        "Permissão insuficiente: somente administradores podem adicionar peças.",
-      );
+      throw new Error("Permissão insuficiente.");
     }
   }
 
-  adicionarEtapaPorFuncionario(etapa: Etapa, funcionario: Funcionario) {
-    if (funcionario.nivelPermissao === "ADMINISTRADOR") {
+  adicionarEtapaPorFuncionario(etapa: Etapa) {
+    if (!NivelPermissao.ADMINISTRADOR) {
       this._etapas.push(etapa);
     } else {
-      console.log(
-        "Permissão insuficiente: somente administradores podem adicionar etapas.",
-      );
+      throw new Error("Permissão insuficiente.");
     }
   }
 
-  adicionarTestePorFuncionario(teste: Teste, funcionario: Funcionario) {
-    if (funcionario.nivelPermissao === "ADMINISTRADOR") {
+  adicionarTestePorFuncionario(teste: Teste) {
+    if (!NivelPermissao.ADMINISTRADOR) {
       this._testes.push(teste);
     } else {
-      console.log(
-        "Permissão insuficiente: somente administradores podem adicionar testes.",
-      );
+      throw new Error("Permissão insuficiente.");
     }
   }
 
-  get pecas(): Peca[] {
+  get pecas(): ReadonlyArray<Peca> {
     return this._pecas;
   }
 
-  get etapas(): Etapa[] {
+  get etapas(): ReadonlyArray<Etapa> {
     return this._etapas;
   }
 
-  get testes(): Teste[] {
+  get testes(): ReadonlyArray<Teste> {
     return this._testes;
   }
 }
