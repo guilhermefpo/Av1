@@ -2,7 +2,6 @@ import type { Etapa, Teste } from "./index.js";
 import type Peca from "./Peca.js";
 import { TipoAeronave } from "../enums/TipoAeronave.js";
 import Funcionario from "./Funcionario.js";
-import { NivelPermissao } from "../enums/NivelPermissao.js";
 
 export default class Aeronave {
   codigo: string;
@@ -29,16 +28,16 @@ export default class Aeronave {
   }
 
   exibirDetalhes() {
-    return `${this.codigo}
-       ${this.modelo}
-       ${this.tipo}
-       ${this.capacidade}
-       ${this.alcance}
+    return `Códogo: ${this.codigo}
+      Modelo: ${this.modelo}
+       Tipo: ${this.tipo}
+       Capacidade: ${this.capacidade}
+       Alcance: ${this.alcance}
       `;
   }
 
   adicionarPecaPorFuncionario(peca: Peca, funcionario: Funcionario) {
-    if (funcionario.nivelPermissao === NivelPermissao.ADMINISTRADOR) {
+    if (funcionario.isAdmin()) {
       this._pecas.push(peca);
     } else {
       throw new Error(
@@ -48,34 +47,34 @@ export default class Aeronave {
   }
 
   adicionarEtapaPorFuncionario(etapa: Etapa, funcionario: Funcionario) {
-    if (funcionario.nivelPermissao === NivelPermissao.ADMINISTRADOR) {
+    if (funcionario.isAdmin()) {
       this._etapas.push(etapa);
     } else {
       throw new Error(
-        "Permissão insuficiente: somente administradores podem adicionar peças.",
+        "Permissão insuficiente: somente administradores podem adicionar etapas.",
       );
     }
   }
 
   adicionarTestePorFuncionario(teste: Teste, funcionario: Funcionario) {
-    if (funcionario.nivelPermissao === NivelPermissao.ADMINISTRADOR) {
+    if (funcionario.isAdmin()) {
       this._testes.push(teste);
     } else {
       throw new Error(
-        "Permissão insuficiente: somente administradores podem adicionar peças.",
+        "Permissão insuficiente: somente administradores podem adicionar testes.",
       );
     }
   }
 
-  get pecas(): Peca[] {
+  get pecas(): ReadonlyArray<Peca> {
     return this._pecas;
   }
 
-  get etapas(): Etapa[] {
+  get etapas(): ReadonlyArray<Etapa> {
     return this._etapas;
   }
 
-  get testes(): Teste[] {
+  get testes(): ReadonlyArray<Teste> {
     return this._testes;
   }
 }
