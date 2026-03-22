@@ -11,7 +11,21 @@ export default class Etapa {
     this.status = status;
   }
 
-  get visualizarStatus() {
-    return this.status;
+  get visualizarStatus(): string {
+    return `Status atual: ${this.status}`;
+  }
+
+  iniciar() {
+    if (this.status === StatusEtapa.PENDENTE) {
+      this.status = StatusEtapa.ANDAMENTO;
+    } else {
+      throw new Error("Etapa não pode ser iniciada.");
+    }
+  }
+
+  finalizar() {
+    if (this.status === StatusEtapa.ANDAMENTO) {
+      this.status = StatusEtapa.CONCLUIDA;
+    }
   }
 }

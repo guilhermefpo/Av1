@@ -2,4 +2,5 @@ export enum StatusPeca {
   PRODUCAO = "PRODUCAO",
   DISPONIVEL = "DISPONIVEL",
   INDISPONIVEL = "INDISPONIVEL",
+  PRONTA = "PRONTA",
 }

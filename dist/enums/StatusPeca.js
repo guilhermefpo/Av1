@@ -1,7 +1,6 @@
-var StatusPeca;
+export var StatusPeca;
 (function (StatusPeca) {
-    StatusPeca["Disponivel"] = "Disponivel";
-    StatusPeca["EmUso"] = "Em Uso";
-    StatusPeca["Danificada"] = "Danificada";
+    StatusPeca["PRODUCAO"] = "PRODUCAO";
+    StatusPeca["DISPONIVEL"] = "DISPONIVEL";
+    StatusPeca["INDISPONIVEL"] = "INDISPONIVEL";
 })(StatusPeca || (StatusPeca = {}));
-export default StatusPeca;

@@ -1,5 +1,5 @@
 export var TipoPeca;
 (function (TipoPeca) {
-    TipoPeca["nacional"] = "Nacional";
-    TipoPeca["importada"] = "Importada";
+    TipoPeca["NACIONAL"] = "NACIONAL";
+    TipoPeca["IMPORTADA"] = "IMPORTADA";
 })(TipoPeca || (TipoPeca = {}));

@@ -1,6 +1,6 @@
 export var NivelPermissao;
 (function (NivelPermissao) {
-    NivelPermissao["administrador"] = "Administrador";
-    NivelPermissao["engenheiro"] = "Engenheiro";
-    NivelPermissao["operador"] = "Operador";
+    NivelPermissao["ADMINISTRADOR"] = "ADMINISTRADOR";
+    NivelPermissao["ENGENHEIRO"] = "ENGENHEIRO";
+    NivelPermissao["OPERADOR"] = "OPERADOR";
 })(NivelPermissao || (NivelPermissao = {}));

@@ -1,3 +1,4 @@
+import type { ResultadoTeste } from "../enums/ResultadoTeste.js";
 import { TipoTeste } from "../enums/TipoTeste.js";
 
 export default class Teste {
@@ -9,7 +10,14 @@ export default class Teste {
     this.resultado = resultado;
   }
 
-  get visualizarTeste(): TipoTeste {
-    return this._tipo;
+  get descricao(): string {
+    return `Teste ${this._tipo} - Resultado: ${this.resultado}`;
+  }
+
+  definirResultado(resultado: ResultadoTeste) {
+    if (this.resultado !== null) {
+      throw new Error("Resultado já definido.");
+    }
+    this.resultado = resultado;
   }
 }

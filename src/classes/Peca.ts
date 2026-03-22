@@ -21,12 +21,14 @@ export default class Peca {
     this.fornecedor = fornecedor;
     this.status = _status;
   }
-
-  get visualizarStatus(): StatusPeca {
-    return this.status;
+  get descricao() {
+    return `${this.nome} (${this.tipo}) - ${this.status}`;
   }
 
-  get visualizarPeca(): TipoPeca {
-    return this.tipo;
+  atualizarStatus(novoStatus: StatusPeca) {
+    if (this.status === StatusPeca.PRONTA) {
+      throw new Error("Peça já finalizada.");
+    }
+    this.status = novoStatus;
   }
 }

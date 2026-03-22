@@ -1,24 +1,12 @@
-import TipoTeste from "../enums/StatusTeste.js";
+import { TipoTeste } from "../enums/TipoTeste.js";
 export default class Teste {
-    id;
-    tipo;
-    constructor(id) {
-        this.id = id;
-        this.tipo = TipoTeste.Simulacao;
+    _tipo;
+    resultado;
+    constructor(tipo, resultado) {
+        this._tipo = tipo;
+        this.resultado = resultado;
     }
-    estrutural() {
-        this.tipo = TipoTeste.Estrutural;
-    }
-    voo() {
-        this.tipo = TipoTeste.Voo;
-    }
-    motor() {
-        this.tipo = TipoTeste.Motor;
-    }
-    sistema() {
-        this.tipo = TipoTeste.Sistema;
-    }
-    certificado() {
-        this.tipo = TipoTeste.Certificacao;
+    get visualizarTeste() {
+        return this._tipo;
     }
 }

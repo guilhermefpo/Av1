@@ -1,5 +1,5 @@
 export var TipoAeronave;
 (function (TipoAeronave) {
-    TipoAeronave["militar"] = "Militar";
-    TipoAeronave["comercial"] = "Comercial";
+    TipoAeronave["MILITAR"] = "MILITAR";
+    TipoAeronave["COMERCIAL"] = "COMERCIAL";
 })(TipoAeronave || (TipoAeronave = {}));
