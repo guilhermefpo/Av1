@@ -1,5 +1,3 @@
-import { Aeronave } from "./classes/index.js";
-import { NivelPermissao } from "./enums/index.js";
 
 /* import * as readline from "readline";
 import Aeronave from "./classes/Aeronave.js";
