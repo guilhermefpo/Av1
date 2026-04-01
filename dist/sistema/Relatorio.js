@@ -1,31 +1,18 @@
-export {};
-/* import GerenciadorAeronave from "./GerenciadorAeronave.js";
-
+import * as fs from "fs";
 export default class Relatorio {
-  gerar(ger: GerenciadorAeronave) {
-    console.log("===Relatório do Projeto===");
-
-    console.log(`Aeronave: ${ger.aeronave.codigo} - ${ger.aeronave.modelo}`);
-
-    console.log("\nFuncionários:");
-    ger.funcionarios.forEach((f) => {
-      console.log(`-${f.id} ${f.nome} (${f.idade} anos)`);
-    });
-
-    console.log("\nPeças:");
-    ger.pecas.forEach((p) => {
-      console.log(`- ${p.nome} (${p.status})`);
-    });
-
-    console.log("\nEtapas:");
-    ger.etapa.forEach((e) => {
-      console.log(`- ${e.etapa}`);
-    });
-
-    console.log("\nTestes:");
-    ger.testes.forEach((t) => {
-      console.log(`- ${t.tipo}`);
-    });
-  }
+    gerar(aeronave) {
+        let texto = "";
+        texto += "===Relatório da Aeronave===\n";
+        texto += aeronave.exibirDetalhes() + "\n";
+        texto += "\n---Peças---\n";
+        aeronave.pecas.forEach((p) => {
+            texto += p.descricao + "\n";
+        });
+        texto += "\n---Etapas---\n";
+        aeronave.etapas.forEach((e) => {
+            texto += `${e.nome} - ${e.visualizarStatus}\n`;
+        });
+        fs.writeFileSync("relatorio.txt", texto, "utf8");
+        console.log("Relatório gerado.");
+    }
 }
- */

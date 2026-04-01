@@ -1,23 +1,22 @@
-import type { ResultadoTeste } from "../enums/ResultadoTeste.js";
 import { TipoTeste } from "../enums/TipoTeste.js";
+import { ResultadoTeste } from "../enums/ResultadoTeste.js";
 
 export default class Teste {
   private _tipo: TipoTeste;
-  resultado: string;
+  private _resultado: ResultadoTeste | null = null;
 
-  constructor(tipo: TipoTeste, resultado: string) {
+  constructor(tipo: TipoTeste) {
     this._tipo = tipo;
-    this.resultado = resultado;
-  }
-
-  get descricao(): string {
-    return `Teste ${this._tipo} - Resultado: ${this.resultado}`;
   }
 
   definirResultado(resultado: ResultadoTeste) {
-    if (this.resultado !== null) {
+    if (this._resultado !== null) {
       throw new Error("Resultado já definido.");
     }
-    this.resultado = resultado;
+    this._resultado = resultado;
+  }
+
+  get descricao(): string {
+    return `Teste ${this._tipo} - Resultado: ${this._resultado ?? "Pendente"}`;
   }
 }

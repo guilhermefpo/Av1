@@ -38,12 +38,4 @@ export default class Funcionario {
   isAdmin(): boolean {
     return this._nivelPermissao === NivelPermissao.ADMINISTRADOR;
   }
-
-  isEngenheiro(): boolean {
-    return this._nivelPermissao === NivelPermissao.ENGENHEIRO;
-  }
-
-  isOperador(): boolean {
-    return this._nivelPermissao === NivelPermissao.OPERADOR;
-  }
 }

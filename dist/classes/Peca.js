@@ -13,10 +13,13 @@ export default class Peca {
         this.fornecedor = fornecedor;
         this.status = _status;
     }
-    get visualizarStatus() {
-        return this.status;
+    get descricao() {
+        return `${this.nome} (${this.tipo}) - ${this.status}`;
     }
-    get visualizarPeca() {
-        return this.tipo;
+    atualizarStatus(novoStatus) {
+        if (this.status === StatusPeca.PRONTA) {
+            throw new Error("Peça já finalizada.");
+        }
+        this.status = novoStatus;
     }
 }

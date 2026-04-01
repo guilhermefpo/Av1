@@ -11,6 +11,10 @@ export default class Etapa {
     this.status = status;
   }
 
+  get descricao(): string {
+    return `${this.nome} — ${this.prazo} (${this.status})`;
+  }
+
   get visualizarStatus(): string {
     return `Status atual: ${this.status}`;
   }

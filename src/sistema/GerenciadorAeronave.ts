@@ -1,10 +1,8 @@
-import type {
-  Aeronave,
-  Etapa,
-  Funcionario,
-  Peca,
-  Teste,
-} from "../classes/index.js";
+import Aeronave from "../classes/Aeronave.js";
+import Funcionario from "../classes/Funcionario.js";
+import Peca from "../classes/Peca.js";
+import Etapa from "../classes/Etapa.js";
+import Teste from "../classes/Teste.js";
 
 export default class GerenciadorAeronave {
   private aeronave: Aeronave;
@@ -18,20 +16,20 @@ export default class GerenciadorAeronave {
     this.funcionarios.push(f);
   }
 
-  listarFuncionarios() {
+  listarFuncionarios(): Funcionario[] {
     return this.funcionarios;
   }
 
-  adicionarPeca(peca: Peca, funcionario: Funcionario) {
-    this.aeronave.adicionarPecaPorFuncionario(peca, funcionario);
+  adicionarPeca(p: Peca, funcionario: Funcionario) {
+    this.aeronave.adicionarPecaPorFuncionario(p, funcionario);
   }
 
-  adicionarEtapa(etapa: Etapa, funcionario: Funcionario) {
-    this.aeronave.adicionarEtapaPorFuncionario(etapa, funcionario);
-  } // Dark Enough - Health
+  adicionarEtapa(e: Etapa, funcionario: Funcionario) {
+    this.aeronave.adicionarEtapaPorFuncionario(e, funcionario);
+  }
 
-  adicionarTeste(teste: Teste, funcionario: Funcionario) {
-    this.aeronave.adicionarTestePorFuncionario(teste, funcionario);
+  adicionarTeste(t: Teste, funcionario: Funcionario) {
+    this.aeronave.adicionarTestePorFuncionario(t, funcionario);
   }
 
   getAeronave() {

@@ -8,7 +8,23 @@ export default class Etapa {
         this.prazo = prazo;
         this.status = status;
     }
+    get descricao() {
+        return `${this.nome} — ${this.prazo} (${this.status})`;
+    }
     get visualizarStatus() {
-        return this.status;
+        return `Status atual: ${this.status}`;
+    }
+    iniciar() {
+        if (this.status === StatusEtapa.PENDENTE) {
+            this.status = StatusEtapa.ANDAMENTO;
+        }
+        else {
+            throw new Error("Etapa não pode ser iniciada.");
+        }
+    }
+    finalizar() {
+        if (this.status === StatusEtapa.ANDAMENTO) {
+            this.status = StatusEtapa.CONCLUIDA;
+        }
     }
 }

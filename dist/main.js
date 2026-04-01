@@ -1,194 +1,96 @@
-import { Aeronave } from "./classes/index.js";
-import { NivelPermissao } from "./enums/index.js";
-/* import * as readline from "readline";
+import * as readline from "readline";
 import Aeronave from "./classes/Aeronave.js";
-import Etapa from "./classes/Etapa.js";
 import Funcionario from "./classes/Funcionario.js";
 import Peca from "./classes/Peca.js";
+import Etapa from "./classes/Etapa.js";
 import Teste from "./classes/Teste.js";
 import GerenciadorAeronave from "./sistema/GerenciadorAeronave.js";
-import Relatorio from "./sistema/Relatorio.js";
-
+import { TipoAeronave } from "./enums/TipoAeronave.js";
+import { TipoPeca } from "./enums/TipoPeca.js";
+import { StatusPeca } from "./enums/StatusPeca.js";
+import { StatusEtapa } from "./enums/StatusEtapa.js";
+import { TipoTeste } from "./enums/TipoTeste.js";
+import { ResultadoTeste } from "./enums/ResultadoTeste.js";
+import { NivelPermissao } from "./enums/NivelPermissao.js";
 const rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout,
+    input: process.stdin,
+    output: process.stdout,
 });
-
-const aeronave = new Aeronave("A001", "Boeing 737");
+const aeronave = new Aeronave("A001", "Boeing 737", TipoAeronave.COMERCIAL, 180, 5000);
 const ger = new GerenciadorAeronave(aeronave);
-const relatorio = new Relatorio();
-
-// Contadores para gerar IDs automáticos
+const admin = new Funcionario("1", "Admin", "999", "Rua X", "admin", "123", NivelPermissao.ADMINISTRADOR);
 let contadorPeca = 1;
-let contadorEtapa = 1;
-let contadorTeste = 1;
-
 function iniciar() {
-  console.log("\n=== Sistema Aeronáutico ===");
-  console.log("Comandos:");
-  console.log("funcionario id nome idade");
-  console.log("peca nome");
-  console.log("etapa nome");
-  console.log("teste tipo");
-  console.log("removerFuncionario id");
-  console.log("removerPeca id");
-  console.log("removerEtapa id");
-  console.log("removerTeste id");
-  console.log("relatorio");
-  console.log("sair");
-
-  rl.question("\nDigite comando: ", (entrada) => {
-    if (entrada.toLowerCase() === "sair") {
-      console.log("Encerrando o sistema...");
-      rl.close();
-      return;
-    }
-
-    const partes = entrada.trim().split(/\s+/);
-    const comando = partes[0]?.toLowerCase();
-
-    // ===== COMANDOS =====
-    if (comando === "funcionario") {
-      const id = partes[1];
-      const idade = Number(partes[partes.length - 1]);
-      const nome = partes.slice(2, partes.length - 1).join(" ");
-
-      if (!id || !nome) {
-        console.log("ID ou Nome inválido.");
-        return iniciar();
-      }
-      if (isNaN(idade)) {
-        console.log("Idade inválida.");
-        return iniciar();
-      }
-
-      const f = new Funcionario(id, nome, idade);
-      ger.adicionarFuncionario(f);
-      console.log("Funcionário adicionado.");
-    } else if (comando === "peca") {
-      const nome = partes.slice(1).join(" ");
-      if (!nome) {
-        console.log("Nome da peça obrigatório.");
-        return iniciar();
-      }
-
-      const id = `P${contadorPeca++}`;
-      const p = new Peca(id, nome); // ID primeiro, nome depois
-      ger.adicionarPeca(p);
-      console.log(`Peça adicionada com ID ${p.id} e nome ${p.nome}.`);
-    } else if (comando === "removerpeca") {
-      const id = partes[1];
-      if (!id) {
-        console.log("Informe o ID da peça.");
-        return iniciar();
-      }
-      const existe = ger.pecas.find((p) => p.id === id);
-      if (!existe) {
-        console.log("Peça não encontrada.");
-        return iniciar();
-      }
-      ger.removerPeca(id);
-      console.log("Peça removida.");
-    } else if (comando === "etapa") {
-      const nome = partes.slice(1).join(" ");
-      if (!nome) {
-        console.log("Nome da etapa obrigatório.");
-        return iniciar();
-      }
-
-      const id = `E${contadorEtapa++}`;
-      const e = new Etapa(id, nome);
-      ger.adicionarEtapa(e);
-      console.log(`Etapa adicionada com ID ${e.id}, nome: ${e.nome}.`);
-    } else if (comando === "removeretapa") {
-      const id = partes[1];
-      if (!id) {
-        console.log("Informe o ID da etapa.");
-        return iniciar();
-      }
-      const existe = ger.etapa.find((e) => e.id === id);
-      if (!existe) {
-        console.log("Etapa não encontrada.");
-        return iniciar();
-      }
-      ger.removerEtapa(id);
-      console.log("Etapa removida.");
-    } else if (comando === "teste") {
-      const tipoInput = partes.slice(1).join(" ");
-      if (!tipoInput) {
-        console.log("Tipo do teste obrigatório.");
-        return iniciar();
-      }
-
-      const id = `T${contadorTeste++}`;
-      const t = new Teste(id); // ID primeiro
-      const ttipo = tipoInput; // Atribui o tipo depois
-      ger.adicionarTeste(t);
-      console.log(`Teste adicionado com ID ${t.id}, tipo: ${ttipo}.`);
-    } else if (comando === "removerteste") {
-      const id = partes[1];
-      if (!id) {
-        console.log("Informe o ID do teste.");
-        return iniciar();
-      }
-      const existe = ger.testes.find((t) => t.id === id);
-      if (!existe) {
-        console.log("Teste não encontrado.");
-        return iniciar();
-      }
-      ger.removerTeste(id);
-      console.log("Teste removido.");
-    } else if (comando === "removerfuncionario") {
-      const id = partes[1];
-      if (!id) {
-        console.log("Informe o ID do funcionário.");
-        return iniciar();
-      }
-      const existe = ger.funcionarios.find((f) => f.id === id);
-      if (!existe) {
-        console.log("Funcionário não encontrado.");
-        return iniciar();
-      }
-      ger.removerFuncionario(id);
-      console.log("Funcionário removido.");
-    } else if (comando === "relatorio") {
-      relatorio.gerar(ger);
-    } else {
-      console.log("Comando inválido.");
-    }
-
-    iniciar();
-  });
+    console.log("\n=== Sistema ===");
+    console.log("funcionario id nome");
+    console.log("peca nome");
+    console.log("etapa nome");
+    console.log("teste eletrico aprovado");
+    console.log("listar");
+    console.log("listarfuncionarios");
+    console.log("sair");
+    rl.question("> ", (entrada) => {
+        const partes = entrada.trim().split(" ");
+        const comando = partes[0]?.toLowerCase();
+        try {
+            if (comando === "sair") {
+                rl.close();
+                return;
+            }
+            if (comando === "funcionario") {
+                const id = partes[1];
+                const nome = partes.slice(2).join(" ");
+                if (id === undefined) {
+                    console.log("Uso: funcionario <id> <nome>");
+                }
+                else {
+                    const f = new Funcionario(id, nome, "000", "end", nome, "123", NivelPermissao.OPERADOR);
+                    ger.adicionarFuncionario(f);
+                    console.log("Funcionário adicionado.");
+                }
+            }
+            else if (comando === "listarfuncionarios") {
+                const lista = ger.listarFuncionarios();
+                if (lista.length === 0) {
+                    console.log("Nenhum funcionário.");
+                }
+                else {
+                    lista.forEach((f) => console.log(`${f.id} - ${f.nome} (${f.nivelPermissao})`));
+                }
+            }
+            else if (comando === "peca") {
+                const nome = partes.slice(1).join(" ");
+                const p = new Peca(`P${contadorPeca++}`, nome, TipoPeca.NACIONAL, "Fornecedor", StatusPeca.PRODUCAO);
+                ger.adicionarPeca(p, admin);
+                console.log("Peça adicionada.");
+            }
+            else if (comando === "etapa") {
+                const nome = partes.slice(1).join(" ");
+                const e = new Etapa(nome, "10 dias", StatusEtapa.PENDENTE);
+                ger.adicionarEtapa(e, admin);
+                console.log("Etapa criada.");
+            }
+            else if (comando === "teste") {
+                const t = new Teste(TipoTeste.ELETRICO);
+                t.definirResultado(ResultadoTeste.APROVADO);
+                ger.adicionarTeste(t, admin);
+                console.log("Teste criado.");
+            }
+            else if (comando === "listar") {
+                const a = ger.getAeronave();
+                console.log(a.exibirDetalhes());
+                a.pecas.forEach((p) => console.log(p.descricao));
+                a.etapas.forEach((e) => console.log(e.descricao));
+                a.testes.forEach((t) => console.log(t.descricao));
+            }
+            else {
+                console.log("Comando inválido.");
+            }
+        }
+        catch (e) {
+            console.log("Erro:", e.message);
+        }
+        iniciar();
+    });
 }
-
 iniciar();
-/* const aeronave = new Aeronave("A001", "Boeing 737");
-const gerador = new GerenciadorAeronave(aeronave);
-
-// Funcionários
-const funcionarios = [
-  new Funcionario("Alysa Liu", 22),
-  new Funcionario("Carlos Felipo", 35),
-  new Funcionario("Jane Clear", 30),
-  new Funcionario("Amber Glean", 26),
-  new Funcionario("Isabeau Levito", 18),
-  new Funcionario("Guilherme Fernando", 19),
-];
-
-funcionarios.forEach((f) => gerador.adicionarFuncionario(f));
-
-const peca1 = new Peca("Motor");
-peca1.usar();
-gerador.adicionarPeca(peca1);
-
-const etapa1 = new Etapa();
-etapa1.revisao();
-gerador.adicionarEtapa(etapa1);
-
-const teste1 = new Teste();
-teste1.certificado();
-gerador.adicionarTeste(teste1);
-
-const relatorio = new Relatorio();
-relatorio.gerar(gerador);
- */
