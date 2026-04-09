@@ -1,3 +1,4 @@
+import * as fs from "fs"; // Para salvar os dados dos funcionários
 import { NivelPermissao } from "../enums/NivelPermissao.js";
 
 export default class Funcionario {
@@ -37,5 +38,25 @@ export default class Funcionario {
 
   isAdmin(): boolean {
     return this._nivelPermissao === NivelPermissao.ADMINISTRADOR;
+  }
+
+  salvar() {
+    const dados = JSON.stringify(this, null, 2);
+    try {
+      if (!fs.existsSync("./database/funcionarios")) {
+        fs.mkdirSync("./database/funcionarios", { recursive: true });
+      }
+      fs.writeFileSync(
+        `./database/funcionarios/func_${this.id}.txt`,
+        dados,
+        "utf-8",
+      );
+    } catch (err) {
+      console.error("Erro ao salvar funcionário:", err);
+    }
+  }
+
+  exibirPerfil(): string {
+    return `ID: ${this.id} | Nome: ${this.nome} | Cargo: ${this._nivelPermissao}`;
   }
 }

@@ -101,6 +101,10 @@ dentro de uma **empresa aeronáutica**, utilizando um sistema simples baseado em
 ```
 
 ⚠️ _A estrutura do projeto pode sofrer alterações futuras conforme o desenvolvimento._
+⚠️ _Relatório de funcionários somente no terminal_
+⚠️ _ADM e aeronave adicionado somente em código TypeScript_
+⚠️ _Analísar todo o terminal: As vezes no processo tive que aumentar ou subir com o mause para ver o resultado_
+⚠️ _Ao adicionar alguma instrução repetida consta como adicionado, entretando, no relatório e listagem não vão constar_
 
 ---
 
@@ -121,7 +125,7 @@ cd av1_gerson
 ### 3️⃣ Instalar as dependências
 
 ```bash
-npm install
+npm i
 ```
 
 ### 4️⃣ Executar o sistema
@@ -137,6 +141,7 @@ node dist/main.js
 🚧 **Projeto em desenvolvimento**
 
 Novas funcionalidades e melhorias poderão ser adicionadas nas próximas versões.
+_09/04/2026: Projeto teoricámente finalizado_
 
 ---
 

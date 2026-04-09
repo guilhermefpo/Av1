@@ -3,6 +3,7 @@ import Funcionario from "../classes/Funcionario.js";
 import Peca from "../classes/Peca.js";
 import Etapa from "../classes/Etapa.js";
 import Teste from "../classes/Teste.js";
+import * as fs from "fs";
 
 export default class GerenciadorAeronave {
   private aeronave: Aeronave;
@@ -13,10 +14,12 @@ export default class GerenciadorAeronave {
   }
 
   adicionarFuncionario(f: Funcionario) {
-    this.funcionarios.push(f);
+    if (!this.funcionarios.some((func) => func.id === f.id)) {
+      this.funcionarios.push(f);
+    }
   }
 
-  listarFuncionarios(): Funcionario[] {
+  listarFuncionarios(): ReadonlyArray<Funcionario> {
     return this.funcionarios;
   }
 
@@ -30,6 +33,24 @@ export default class GerenciadorAeronave {
 
   adicionarTeste(t: Teste, funcionario: Funcionario) {
     this.aeronave.adicionarTestePorFuncionario(t, funcionario);
+  }
+
+  salvarEstado() {
+    const dados = JSON.stringify(
+      {
+        //
+        aeronave: this.aeronave,
+        equipe: this.funcionarios,
+      },
+      null,
+      2,
+    );
+
+    fs.writeFileSync(
+      `./database/gerenciamento_${this.aeronave.codigo}.txt`,
+      dados,
+    );
+    console.log(`Estado do gerenciamento da ${this.aeronave.codigo} salvo.`);
   }
 
   getAeronave() {

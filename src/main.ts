@@ -12,6 +12,7 @@ import { StatusEtapa } from "./enums/StatusEtapa.js";
 import { TipoTeste } from "./enums/TipoTeste.js";
 import { ResultadoTeste } from "./enums/ResultadoTeste.js";
 import { NivelPermissao } from "./enums/NivelPermissao.js";
+import Relatorio from "./sistema/Relatorio.js";
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -19,117 +20,144 @@ const rl = readline.createInterface({
 });
 
 const aeronave = new Aeronave(
-  "A001",
-  "Boeing 737",
+  "AERO-001",
+  "Modelo Padrão",
   TipoAeronave.COMERCIAL,
   180,
   5000,
 );
 
 const ger = new GerenciadorAeronave(aeronave);
-
-const admin = new Funcionario(
-  "1",
-  "Admin",
-  "999",
-  "Rua X",
-  "admin",
-  "123",
-  NivelPermissao.ADMINISTRADOR,
-);
-
-ger.adicionarFuncionario(admin);
-
+const rel = new Relatorio();
 let contadorPeca = 1;
 
-function iniciar() {
-  console.log("\n=== Sistema ===");
-  console.log("funcionario id nome");
-  console.log("peca nome");
-  console.log("etapa nome");
-  console.log("teste eletrico aprovado");
-  console.log("listar");
-  console.log("listarfuncionarios");
-  console.log("sair");
+const admin = new Funcionario(
+  "ADM-1",
+  "Administrador do Sistema",
+  "000",
+  "end",
+  "admin",
+  "admin",
+  NivelPermissao.ADMINISTRADOR,
+);
+ger.adicionarFuncionario(admin);
 
-  rl.question("> ", (entrada) => {
+function iniciar() {
+  console.log("\n" + "=".repeat(35));
+  console.log("       AEROCODE SYSTEM");
+  console.log("=".repeat(35));
+  console.log("Comandos:");
+  console.log("- funcionario <id> <nome>");
+  console.log("- listarfuncionarios");
+  console.log("- peca <nome>");
+  console.log("- etapa <nome>");
+  console.log("- teste");
+  console.log("- listar");
+  console.log("- relatorio");
+  console.log("- sair");
+
+  rl.question("\n> ", (entrada: string) => {
     const partes = entrada.trim().split(" ");
     const comando = partes[0]?.toLowerCase();
 
     try {
       if (comando === "sair") {
+        console.log("Desligando sistema...");
         rl.close();
         return;
       }
 
-      if (comando === "funcionario") {
-        const id = partes[1];
-        const nome = partes.slice(2).join(" ");
+      switch (comando) {
+        case "funcionario":
+          const id = partes[1];
+          const nomeFunc = partes.slice(2).join(" ");
+          if (!id || !nomeFunc) {
+            console.log("Erro: Informe ID e Nome.");
+          } else {
+            const f = new Funcionario(
+              id,
+              nomeFunc,
+              "000",
+              "end",
+              nomeFunc,
+              "123",
+              NivelPermissao.OPERADOR,
+            );
+            ger.adicionarFuncionario(f);
+            console.log(`[OK] Funcionário ${nomeFunc} cadastrado.`);
+          }
+          break;
 
-        if (id === undefined) {
-          console.log("Uso: funcionario <id> <nome>");
-        } else {
-          const f = new Funcionario(
-            id,
-            nome,
-            "000",
-            "end",
-            nome,
-            "123",
-            NivelPermissao.OPERADOR,
+        case "listarfuncionarios":
+          const lista = ger.listarFuncionarios();
+          console.log("\n--- EQUIPE TÉCNICA ---");
+          if (lista.length === 0) {
+            console.log("Nenhum funcionário alocado.");
+          } else {
+            console.log("ID".padEnd(8) + "| NOME".padEnd(25) + "| CARGO");
+            lista.forEach((f) => {
+              console.log(
+                `${f.id.padEnd(8)}| ${f.nome.padEnd(25)}| ${f.nivelPermissao}`,
+              );
+            });
+          }
+          break;
+
+        case "peca":
+          const nomePeca = partes.slice(1).join(" ");
+          if (!nomePeca) {
+            console.log("Erro: Informe o nome da peça.");
+          } else {
+            const p = new Peca(
+              `P${contadorPeca++}`,
+              nomePeca,
+              TipoPeca.NACIONAL,
+              "Fornecedor Padrão",
+              StatusPeca.PRODUCAO,
+            );
+            ger.adicionarPeca(p, admin);
+            aeronave.salvar();
+            console.log(`[OK] Peça ${nomePeca} vinculada.`);
+          }
+          break;
+
+        case "etapa":
+          const nomeEtapa = partes.slice(1).join(" ");
+          if (!nomeEtapa) {
+            console.log("Erro: Informe o nome da etapa.");
+          } else {
+            const e = new Etapa(nomeEtapa, "15 dias", StatusEtapa.PENDENTE);
+            ger.adicionarEtapa(e, admin);
+            aeronave.salvar();
+            console.log(`[OK] Etapa ${nomeEtapa} criada.`);
+          }
+          break;
+
+        case "teste":
+          const t = new Teste(TipoTeste.AERODINAMICO);
+          t.definirResultado(ResultadoTeste.APROVADO);
+          ger.adicionarTeste(t, admin);
+          aeronave.salvar();
+          console.log("[OK] Teste Aerodinâmico: APROVADO.");
+          break;
+
+        case "listar":
+          console.log("\n--- STATUS DA AERONAVE ---");
+          console.log(aeronave.exibirDetalhes());
+          console.log(
+            `Peças: ${aeronave.pecas.length} | Etapas: ${aeronave.etapas.length} | Testes: ${aeronave.testes.length}`,
           );
+          break;
 
-          ger.adicionarFuncionario(f);
-          console.log("Funcionário adicionado.");
-        }
-      } else if (comando === "listarfuncionarios") {
-        const lista = ger.listarFuncionarios();
+        case "relatorio":
+          rel.gerar(aeronave);
+          break;
 
-        if (lista.length === 0) {
-          console.log("Nenhum funcionário.");
-        } else {
-          lista.forEach((f) =>
-            console.log(`${f.id} - ${f.nome} (${f.nivelPermissao})`),
-          );
-        }
-      } else if (comando === "peca") {
-        const nome = partes.slice(1).join(" ");
-
-        const p = new Peca(
-          `P${contadorPeca++}`,
-          nome,
-          TipoPeca.NACIONAL,
-          "Fornecedor",
-          StatusPeca.PRODUCAO,
-        );
-
-        ger.adicionarPeca(p, admin);
-        console.log("Peça adicionada.");
-      } else if (comando === "etapa") {
-        const nome = partes.slice(1).join(" ");
-        const e = new Etapa(nome, "10 dias", StatusEtapa.PENDENTE);
-
-        ger.adicionarEtapa(e, admin);
-        console.log("Etapa criada.");
-      } else if (comando === "teste") {
-        const t = new Teste(TipoTeste.ELETRICO);
-        t.definirResultado(ResultadoTeste.APROVADO);
-
-        ger.adicionarTeste(t, admin);
-        console.log("Teste criado.");
-      } else if (comando === "listar") {
-        const a = ger.getAeronave();
-
-        console.log(a.exibirDetalhes());
-
-        a.pecas.forEach((p) => console.log(p.descricao));
-        a.etapas.forEach((e) => console.log(e.descricao));
-        a.testes.forEach((t) => console.log(t.descricao));
-      } else {
-        console.log("Comando inválido.");
+        default:
+          console.log("Comando não reconhecido.");
       }
     } catch (e: any) {
-      console.log("Erro:", e.message);
+      console.log("\n[ERRO]:", e.message);
     }
 
     iniciar();

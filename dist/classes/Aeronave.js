@@ -1,4 +1,8 @@
+import * as fs from "fs";
+import { Etapa, Teste } from "./index.js";
+import Peca from "./Peca.js";
 import { TipoAeronave } from "../enums/TipoAeronave.js";
+import { StatusEtapa } from "../enums/StatusEtapa.js";
 import Funcionario from "./Funcionario.js";
 export default class Aeronave {
     codigo;
@@ -17,12 +21,29 @@ export default class Aeronave {
         this.alcance = alcance;
     }
     exibirDetalhes() {
-        return `Códogo: ${this.codigo}
+        return `Código: ${this.codigo}
       Modelo: ${this.modelo}
-       Tipo: ${this.tipo}
-       Capacidade: ${this.capacidade}
-       Alcance: ${this.alcance}
-      `;
+      Tipo: ${this.tipo}
+      Capacidade: ${this.capacidade}
+      Alcance: ${this.alcance}`;
+    }
+    finalizarEtapa(index) {
+        const etapaAtual = this._etapas[index];
+        if (!etapaAtual)
+            return;
+        if (index > 0) {
+            const etapaAnterior = this._etapas[index - 1];
+            if (!etapaAnterior || etapaAnterior.status !== StatusEtapa.CONCLUIDA) {
+                console.log("Erro: A etapa anterior deve ser concluída primeiro.");
+                return;
+            }
+        }
+        etapaAtual.status = StatusEtapa.CONCLUIDA;
+    }
+    // --- REQUISITO: PERSISTÊNCIA EM ARQUIVO ---
+    salvar() {
+        const dados = JSON.stringify(this, null, 2);
+        fs.writeFileSync(`./${this.codigo}.txt`, dados, "utf-8");
     }
     adicionarPecaPorFuncionario(peca, funcionario) {
         if (funcionario.isAdmin()) {
