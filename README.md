@@ -150,9 +150,9 @@ Senha: admin
 ctrl + C
 ```
 
-⚠️ _Com o comando 5, você sairá do sistema completamente_ <br>
-⚠️ _Ao logar e quiser sair, vai voltar para o login_ <br>
-⚠️ _Todos os comandos fornecidos funcionaram no powershell e no cmd_ <br>
+⚠️ _Com o comando 5, você sairá do sistema completamente._ <br>
+⚠️ _Ao logar e quiser sair, vai voltar para o login._ <br>
+⚠️ _Todos os comandos fornecidos funcionaram no powershell e no cmd._ <br>
 
 ---
 
