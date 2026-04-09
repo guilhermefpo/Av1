@@ -134,6 +134,26 @@ npm i
 node dist/main.js
 ```
 
+### 5️⃣ Logar no sistema
+
+```bash
+Usuário: admin
+Senha: admin
+
+```
+
+### 5️⃣ Sair do login
+
+> Realizar
+
+```bash
+ctrl + C
+```
+
+⚠️ _Com o comando 5, você sairá do sistema completamente_ <br>
+⚠️ _Ao logar e quiser sair, vai voltar para o login_ <br>
+⚠️ _Todos os comandos fornecidos funcionaram no powershell e no cmd_ <br>
+
 ---
 
 # 📌 Status do Projeto
