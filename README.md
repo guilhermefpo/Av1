@@ -101,10 +101,10 @@ dentro de uma **empresa aeronáutica**, utilizando um sistema simples baseado em
 ```
 
 ⚠️ _A estrutura do projeto pode sofrer alterações futuras conforme o desenvolvimento._ <br>
-⚠️ _Relatório de funcionários somente no terminal_ <br>
-⚠️ _ADM e aeronave adicionado somente em código TypeScript_ <br>
-⚠️ _Analísar todo o terminal: As vezes no processo tive que aumentar ou subir com o mause para ver o resultado_ <br>
-⚠️ _Ao adicionar alguma instrução repetida consta como adicionado, entretando, no relatório e listagem não vão constar_ <br>
+⚠️ _Relatório de funcionários somente no terminal._ <br>
+⚠️ _ADM e aeronave adicionado somente em código TypeScript._ <br>
+⚠️ _Analísar todo o terminal: As vezes no processo tive que aumentar ou subir com o mause para ver o resultado._ <br>
+⚠️ _Ao adicionar alguma instrução repetida consta como adicionado, entretando, no relatório e listagem não vão constar._ <br>
 
 ---
 
