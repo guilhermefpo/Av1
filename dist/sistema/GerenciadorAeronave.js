@@ -29,6 +29,7 @@ export default class GerenciadorAeronave {
     }
     salvarEstado() {
         const dados = JSON.stringify({
+            //
             aeronave: this.aeronave,
             equipe: this.funcionarios,
         }, null, 2);

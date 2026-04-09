@@ -21,10 +21,31 @@ const aeronave = new Aeronave("AERO-001", "Modelo Padrão", TipoAeronave.COMERCI
 const ger = new GerenciadorAeronave(aeronave);
 const rel = new Relatorio();
 let contadorPeca = 1;
-// Cadastro do Admin inicial
-const admin = new Funcionario("ADM-1", "Administrador do Sistema", "000", "end", "admin", "admin", NivelPermissao.ADMINISTRADOR);
-ger.adicionarFuncionario(admin);
-function iniciar() {
+let usuarioLogado = null;
+const adminMestre = new Funcionario("ADM-1", "Admin", "000", "Fábrica", "admin", "admin", NivelPermissao.ADMINISTRADOR);
+ger.adicionarFuncionario(adminMestre);
+function realizarLogin() {
+    console.log("\n" + "=".repeat(30));
+    console.log("       AEROCODE LOGIN");
+    console.log("=".repeat(30));
+    rl.question("Usuário: ", (user) => {
+        rl.question("Senha: ", (pass) => {
+            const lista = ger.listarFuncionarios();
+            const encontrou = lista.find((f) => f.autenticar(user, pass));
+            if (encontrou) {
+                usuarioLogado = encontrou;
+                console.log(`\n[OK] Bem-vindo, ${usuarioLogado.nome}!`);
+                console.log(`Nível de Acesso: ${usuarioLogado.nivelPermissao}`);
+                iniciarMenu();
+            }
+            else {
+                console.log("\n[ERRO] Usuário ou senha inválidos.");
+                realizarLogin();
+            }
+        });
+    });
+}
+function iniciarMenu() {
     console.log("\n" + "=".repeat(35));
     console.log("       AEROCODE SYSTEM");
     console.log("=".repeat(35));
@@ -42,8 +63,9 @@ function iniciar() {
         const comando = partes[0]?.toLowerCase();
         try {
             if (comando === "sair") {
-                console.log("Desligando sistema...");
-                rl.close();
+                console.log("Deslogando...");
+                usuarioLogado = null;
+                realizarLogin();
                 return;
             }
             switch (comando) {
@@ -62,15 +84,7 @@ function iniciar() {
                 case "listarfuncionarios":
                     const lista = ger.listarFuncionarios();
                     console.log("\n--- EQUIPE TÉCNICA ---");
-                    if (lista.length === 0) {
-                        console.log("Nenhum funcionário alocado.");
-                    }
-                    else {
-                        console.log("ID".padEnd(8) + "| NOME".padEnd(25) + "| CARGO");
-                        lista.forEach((f) => {
-                            console.log(`${f.id.padEnd(8)}| ${f.nome.padEnd(25)}| ${f.nivelPermissao}`);
-                        });
-                    }
+                    lista.forEach((f) => console.log(`${f.id.padEnd(8)}| ${f.nome.padEnd(20)}| ${f.nivelPermissao}`));
                     break;
                 case "peca":
                     const nomePeca = partes.slice(1).join(" ");
@@ -79,7 +93,7 @@ function iniciar() {
                     }
                     else {
                         const p = new Peca(`P${contadorPeca++}`, nomePeca, TipoPeca.NACIONAL, "Fornecedor Padrão", StatusPeca.PRODUCAO);
-                        ger.adicionarPeca(p, admin);
+                        ger.adicionarPeca(p, usuarioLogado);
                         aeronave.salvar();
                         console.log(`[OK] Peça ${nomePeca} vinculada.`);
                     }
@@ -91,7 +105,7 @@ function iniciar() {
                     }
                     else {
                         const e = new Etapa(nomeEtapa, "15 dias", StatusEtapa.PENDENTE);
-                        ger.adicionarEtapa(e, admin);
+                        ger.adicionarEtapa(e, usuarioLogado);
                         aeronave.salvar();
                         console.log(`[OK] Etapa ${nomeEtapa} criada.`);
                     }
@@ -99,14 +113,13 @@ function iniciar() {
                 case "teste":
                     const t = new Teste(TipoTeste.AERODINAMICO);
                     t.definirResultado(ResultadoTeste.APROVADO);
-                    ger.adicionarTeste(t, admin);
+                    ger.adicionarTeste(t, usuarioLogado);
                     aeronave.salvar();
-                    console.log("[OK] Teste Aerodinâmico: APROVADO.");
+                    console.log("[OK] Teste realizado.");
                     break;
                 case "listar":
                     console.log("\n--- STATUS DA AERONAVE ---");
                     console.log(aeronave.exibirDetalhes());
-                    console.log(`Peças: ${aeronave.pecas.length} | Etapas: ${aeronave.etapas.length} | Testes: ${aeronave.testes.length}`);
                     break;
                 case "relatorio":
                     rel.gerar(aeronave);
@@ -118,7 +131,7 @@ function iniciar() {
         catch (e) {
             console.log("\n[ERRO]:", e.message);
         }
-        iniciar();
+        iniciarMenu();
     });
 }
-iniciar();
+realizarLogin();
