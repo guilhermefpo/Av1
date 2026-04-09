@@ -100,11 +100,11 @@ dentro de uma **empresa aeronáutica**, utilizando um sistema simples baseado em
 └── 📄 README.md
 ```
 
-⚠️ _A estrutura do projeto pode sofrer alterações futuras conforme o desenvolvimento._
-⚠️ _Relatório de funcionários somente no terminal_
-⚠️ _ADM e aeronave adicionado somente em código TypeScript_
-⚠️ _Analísar todo o terminal: As vezes no processo tive que aumentar ou subir com o mause para ver o resultado_
-⚠️ _Ao adicionar alguma instrução repetida consta como adicionado, entretando, no relatório e listagem não vão constar_
+⚠️ _A estrutura do projeto pode sofrer alterações futuras conforme o desenvolvimento._ <br>
+⚠️ _Relatório de funcionários somente no terminal_ <br>
+⚠️ _ADM e aeronave adicionado somente em código TypeScript_ <br>
+⚠️ _Analísar todo o terminal: As vezes no processo tive que aumentar ou subir com o mause para ver o resultado_ <br>
+⚠️ _Ao adicionar alguma instrução repetida consta como adicionado, entretando, no relatório e listagem não vão constar_ <br>
 
 ---
 
