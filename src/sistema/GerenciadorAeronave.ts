@@ -13,7 +13,7 @@ export default class GerenciadorAeronave {
     this.aeronave = aeronave;
   }
 
-  adicionarFuncionario(f: Funcionario) {
+  adicionarFuncionario(f: Funcionario): void {
     if (!this.funcionarios.some((func) => func.id === f.id)) {
       this.funcionarios.push(f);
     }
@@ -23,22 +23,25 @@ export default class GerenciadorAeronave {
     return this.funcionarios;
   }
 
-  adicionarPeca(p: Peca, funcionario: Funcionario) {
-    this.aeronave.adicionarPecaPorFuncionario(p, funcionario);
+  adicionarPeca(p: Peca, funcionario: Funcionario): void {
+    this.adicionarFuncionario(funcionario);
+    this.aeronave.pecas.push(p);
   }
 
-  adicionarEtapa(e: Etapa, funcionario: Funcionario) {
-    this.aeronave.adicionarEtapaPorFuncionario(e, funcionario);
+  adicionarEtapa(e: Etapa, funcionario: Funcionario): void {
+    this.adicionarFuncionario(funcionario);
+    e.adicionarFuncionario(funcionario);
+    this.aeronave.etapas.push(e);
   }
 
-  adicionarTeste(t: Teste, funcionario: Funcionario) {
-    this.aeronave.adicionarTestePorFuncionario(t, funcionario);
+  adicionarTeste(t: Teste, funcionario: Funcionario): void {
+    this.adicionarFuncionario(funcionario);
+    this.aeronave.testes.push(t);
   }
 
-  salvarEstado() {
+  salvarEstado(): void {
     const dados = JSON.stringify(
       {
-        //
         aeronave: this.aeronave,
         equipe: this.funcionarios,
       },
@@ -46,14 +49,27 @@ export default class GerenciadorAeronave {
       2,
     );
 
-    fs.writeFileSync(
-      `./database/gerenciamento_${this.aeronave.codigo}.txt`,
-      dados,
-    );
-    console.log(`Estado do gerenciamento da ${this.aeronave.codigo} salvo.`);
+    const pastaDestino = "./data";
+
+    try {
+      if (!fs.existsSync(pastaDestino)) {
+        fs.mkdirSync(pastaDestino, { recursive: true });
+      }
+
+      fs.writeFileSync(
+        `${pastaDestino}/gerenciamento_${this.aeronave.codigo}.json`,
+        dados,
+        "utf8",
+      );
+      console.log(
+        `[SISTEMA] Estado do gerenciamento da aeronave ${this.aeronave.codigo} salvo com sucesso.`,
+      );
+    } catch (err) {
+      console.error("Erro ao salvar o estado do gerenciamento:", err);
+    }
   }
 
-  getAeronave() {
+  getAeronave(): Aeronave {
     return this.aeronave;
   }
 }

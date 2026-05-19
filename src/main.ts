@@ -19,43 +19,46 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
-const aeronave = new Aeronave(
-  "AERO-001",
-  "Modelo Padrão",
-  TipoAeronave.COMERCIAL,
-  180,
-  5000,
-);
-const ger = new GerenciadorAeronave(aeronave);
+let osMuitosAvioes: Aeronave[] = [];
+let funcionariosCadastrados: Funcionario[] = [];
+let aeronaveContexto: Aeronave | null = null;
+let ger: GerenciadorAeronave | null = null;
+
 const rel = new Relatorio();
 let contadorPeca = 1;
 let usuarioLogado: Funcionario | null = null;
 
 const adminMestre = new Funcionario(
   "ADM-1",
-  "Admin",
-  "000",
-  "Fábrica",
+  "Guilherme Fernando",
+  "12999999999",
+  "Fábrica SJC",
   "admin",
-  "admin",
+  "admin123",
   NivelPermissao.ADMINISTRADOR,
 );
-ger.adicionarFuncionario(adminMestre);
+funcionariosCadastrados.push(adminMestre);
 
 function realizarLogin() {
-  console.log("\n" + "=".repeat(30));
-  console.log("       AEROCODE LOGIN");
-  console.log("=".repeat(30));
+  console.log("\n" + "=".repeat(40));
+  console.log("        AEROCODE CORE LOGIN");
+  console.log("=".repeat(40));
+  console.log(
+    " >> Dica: Use o comando 'sair' no menu para testar outro usuário.",
+  );
+  console.log("-".repeat(40));
 
   rl.question("Usuário: ", (user) => {
     rl.question("Senha: ", (pass) => {
-      const lista = ger.listarFuncionarios();
-      const encontrou = lista.find((f) => f.autenticar(user, pass));
+      const encontrou = funcionariosCadastrados.find((f) =>
+        f.autenticar(user, pass),
+      );
 
       if (encontrou) {
         usuarioLogado = encontrou;
-        console.log(`\n[OK] Bem-vindo, ${usuarioLogado.nome}!`);
-        console.log(`Nível de Acesso: ${usuarioLogado.nivelPermissao}`);
+        console.log(
+          `\n[OK] Autenticado com sucesso: ${usuarioLogado.nome} [${usuarioLogado.nivelPermissao}]`,
+        );
         iniciarMenu();
       } else {
         console.log("\n[ERRO] Usuário ou senha inválidos.");
@@ -66,116 +69,283 @@ function realizarLogin() {
 }
 
 function iniciarMenu() {
-  console.log("\n" + "=".repeat(35));
-  console.log("       AEROCODE SYSTEM");
-  console.log("=".repeat(35));
-  console.log("Comandos:");
-  console.log("- funcionario <id> <nome>");
-  console.log("- listarfuncionarios");
-  console.log("- peca <nome>");
-  console.log("- etapa <nome>");
-  console.log("- teste");
-  console.log("- listar");
-  console.log("- relatorio");
-  console.log("- sair");
+  console.log("\n" + "=".repeat(45));
+  console.log("            AEROCODE CLI SYSTEM");
+  console.log("=".repeat(45));
+  console.log(
+    `Operador Logado: ${usuarioLogado?.nome} | Privilégio: ${usuarioLogado?.nivelPermissao}`,
+  );
+  console.log(
+    `Aeronave em Foco: ${aeronaveContexto ? `${aeronaveContexto.modelo} (${aeronaveContexto.codigo})` : "NENHUMA (Use 'focar <codigo>')"}`,
+  );
+  console.log("-".repeat(45));
+  console.log("Comandos Disponíveis:");
+  console.log(" > criaraeronave <codigo> <modelo>");
+  console.log(" > listaraeronaves");
+  console.log(" > focar <codigo_aeronave>");
+  console.log(
+    " > funcionario <id> <nome> <usuario> <senha> <admin|engenheiro|operador>",
+  );
+  console.log(" > listarfuncionarios");
+  console.log(" > peca <nome_peca>");
+  console.log(" > etapa <nome_etapa>");
+  console.log(" > teste");
+  console.log(" > status");
+  console.log(" > relatorio");
+  console.log(" > sair");
 
-  rl.question("\n> ", (entrada: string) => {
+  rl.question("\nAeroCode> ", (entrada: string) => {
     const partes = entrada.trim().split(" ");
     const comando = partes[0]?.toLowerCase();
 
     try {
       if (comando === "sair") {
-        console.log("Deslogando...");
+        console.log("\nDeslogando usuário atual...");
         usuarioLogado = null;
         realizarLogin();
         return;
       }
 
       switch (comando) {
-        case "funcionario":
-          const id = partes[1];
-          const nomeFunc = partes.slice(2).join(" ");
-          if (!id || !nomeFunc) {
-            // Intro - ODESZA
-            console.log("Erro: Informe ID e Nome.");
-          } else {
-            const f = new Funcionario(
-              id,
-              nomeFunc,
-              "000",
-              "end",
-              nomeFunc,
-              "123",
-              NivelPermissao.OPERADOR,
+        case "criaraeronave": {
+          if (usuarioLogado?.nivelPermissao !== NivelPermissao.ADMINISTRADOR) {
+            console.log(
+              "\n[BLOQUEADO] Acesso negado. Requer nível ADMINISTRADOR.",
             );
-            ger.adicionarFuncionario(f);
-            console.log(`[OK] Funcionário ${nomeFunc} cadastrado.`);
+            break;
+          }
+          const cod = partes[1];
+          const mod = partes.slice(2).join(" ");
+          if (!cod || !mod) {
+            console.log("Erro: Use 'criaraeronave <codigo> <modelo>'");
+          } else {
+            const nova = new Aeronave(
+              cod,
+              mod,
+              TipoAeronave.COMERCIAL,
+              150,
+              4000,
+            );
+            nova.salvar();
+            osMuitosAvioes.push(nova);
+            console.log(`\n[OK] Aeronave ${cod} registrada de fábrica.`);
           }
           break;
+        }
 
-        case "listarfuncionarios":
-          const lista = ger.listarFuncionarios();
-          console.log("\n--- EQUIPE TÉCNICA ---");
-          lista.forEach((f) =>
+        case "listaraeronaves":
+          console.log("\n--- FROTA EM PROCESSAMENTO ---");
+          if (osMuitosAvioes.length === 0)
+            console.log("Nenhuma aeronave na fábrica.");
+          osMuitosAvioes.forEach((a) => {
             console.log(
-              `${f.id.padEnd(8)}| ${f.nome.padEnd(20)}| ${f.nivelPermissao}`,
-            ),
-          );
+              `* Código: ${a.codigo.padEnd(10)} | Modelo: ${a.modelo.padEnd(15)} | Peças: ${a.pecas.length}`,
+            );
+          });
           break;
 
-        case "peca":
+        case "focar": {
+          const alvo = partes[1];
+          const encontrada = osMuitosAvioes.find(
+            (a) => a.codigo.toLowerCase() === alvo?.toLowerCase(),
+          );
+          if (!encontrada) {
+            console.log("\n[ERRO] Esta aeronave não foi criada/encontrada.");
+          } else {
+            aeronaveContexto = encontrada;
+            ger = new GerenciadorAeronave(aeronaveContexto);
+
+            funcionariosCadastrados.forEach((f) =>
+              ger?.adicionarFuncionario(f),
+            );
+            console.log(
+              `\n[SISTEMA] Gerenciador focado na aeronave: ${aeronaveContexto.codigo}`,
+            );
+          }
+          break;
+        }
+
+        case "funcionario": {
+          if (usuarioLogado?.nivelPermissao !== NivelPermissao.ADMINISTRADOR) {
+            console.log(
+              "\n[BLOQUEADO] Cadastro de funcionários restrito a ADMINISTRADORES.",
+            );
+            break;
+          }
+
+          const idFunc = partes[1];
+          const cargoStr = partes[partes.length - 1]?.toLowerCase();
+          const senhaFunc = partes[partes.length - 2];
+          const userFunc = partes[partes.length - 3];
+          const nomeFunc = partes.slice(2, partes.length - 3).join(" ");
+
+          if (!idFunc || !nomeFunc || !userFunc || !senhaFunc || !cargoStr) {
+            console.log(
+              "Erro: Use 'funcionario <id> <nome> <usuario> <senha> <admin|engenheiro|operador>'",
+            );
+            break;
+          }
+
+          let nivel = NivelPermissao.OPERADOR;
+          if (cargoStr === "admin") nivel = NivelPermissao.ADMINISTRADOR;
+          if (cargoStr === "engenheiro") nivel = NivelPermissao.ENGENHEIRO;
+
+          const f = new Funcionario(
+            idFunc,
+            nomeFunc,
+            "1299999",
+            "SJC",
+            userFunc,
+            senhaFunc,
+            nivel,
+          );
+
+          funcionariosCadastrados.push(f);
+
+          if (ger) ger.adicionarFuncionario(f);
+
+          console.log(
+            `\n[OK] Funcionário técnico '${nomeFunc}' cadastrado no sistema!`,
+          );
+          console.log(
+            `Credenciais geradas -> Usuário: ${userFunc} | Senha: ${senhaFunc}`,
+          );
+          break;
+        }
+
+        case "listarfuncionarios":
+          console.log("\n" + "-".repeat(40));
+          console.log("   RELAÇÃO DE COMPANHIAS / QUADRO TÉCNICO");
+          console.log("-".repeat(40));
+          funcionariosCadastrados.forEach((f) => {
+            console.log(
+              `ID: ${f.id.padEnd(6)} | Nome: ${f.nome.padEnd(18)} | Usuário: ${f.usuario.padEnd(12)} | Nível: ${f.nivelPermissao}`,
+            );
+          });
+          break;
+
+        case "peca": {
+          if (!ger || !aeronaveContexto) {
+            console.log(
+              "\n[AVISO] Digite o comando 'focar <codigo_da_aeronave>' antes de gerenciar peças.",
+            );
+            break;
+          }
           const nomePeca = partes.slice(1).join(" ");
           if (!nomePeca) {
             console.log("Erro: Informe o nome da peça.");
           } else {
             const p = new Peca(
-              `P${contadorPeca++}`,
+              `P-${contadorPeca++}`,
               nomePeca,
               TipoPeca.NACIONAL,
-              "Fornecedor Padrão",
-              StatusPeca.PRODUCAO,
+              "Embraer Fornecedor",
+              StatusPeca.EM_PRODUCAO,
             );
-
             ger.adicionarPeca(p, usuarioLogado!);
-            aeronave.salvar();
-            console.log(`[OK] Peça ${nomePeca} vinculada.`);
+            aeronaveContexto.salvar();
+            console.log(
+              `\n[OK] Peça acoplada com sucesso ao ${aeronaveContexto.codigo}.`,
+            );
           }
           break;
+        }
 
-        case "etapa":
+        case "etapa": {
+          if (!ger || !aeronaveContexto) {
+            console.log("\n[AVISO] Nenhuma aeronave focada no momento.");
+            break;
+          }
           const nomeEtapa = partes.slice(1).join(" ");
           if (!nomeEtapa) {
             console.log("Erro: Informe o nome da etapa.");
           } else {
-            const e = new Etapa(nomeEtapa, "15 dias", StatusEtapa.PENDENTE);
+            const e = new Etapa(nomeEtapa, "2026-12-31", StatusEtapa.PENDENTE);
             ger.adicionarEtapa(e, usuarioLogado!);
-            aeronave.salvar();
-            console.log(`[OK] Etapa ${nomeEtapa} criada.`);
+            aeronaveContexto.salvar();
+            console.log(`\n[OK] Etapa registrada na esteira da aeronave.`);
+          }
+          break;
+        }
+
+        case "teste": {
+          if (usuarioLogado?.nivelPermissao === NivelPermissao.OPERADOR) {
+            console.log(
+              "\n[BLOQUEADO] Operadores não emitem ou assinam laudos de testes técnicos.",
+            );
+            break;
+          }
+          if (!ger || !aeronaveContexto) {
+            console.log("\n[AVISO] Nenhuma aeronave focada para testes.");
+            break;
+          }
+
+          const totalEtapas = aeronaveContexto.etapas.length;
+          if (
+            totalEtapas > 0 &&
+            aeronaveContexto.etapas[totalEtapas - 1]?.status !==
+              StatusEtapa.CONCLUIDA
+          ) {
+            console.log(
+              `\n[BLOQUEIO] Não é possível rodar testes. A etapa '${aeronaveContexto.etapas[totalEtapas - 1]?.nome}' não foi concluída.`,
+            );
+            break;
+          }
+
+          const t = new Teste(TipoTeste.AERODINAMICO, ResultadoTeste.APROVADO);
+          ger.adicionarTeste(t, usuarioLogado!);
+          aeronaveContexto.salvar();
+          console.log("\n[OK] Teste de homologação executado com sucesso.");
+          break;
+        }
+
+        case "status":
+          if (!aeronaveContexto) {
+            console.log(
+              "\n[AVISO] Use o comando 'focar <codigo>' para ver os detalhes.",
+            );
+          } else {
+            console.log("\n" + "=".repeat(35));
+            console.log(` STATUS DA AERONAVE: ${aeronaveContexto.codigo}`);
+            console.log("=".repeat(35));
+            console.log(`Modelo: ${aeronaveContexto.modelo}`);
+            console.log(
+              `Quantidade de Peças: ${aeronaveContexto.pecas.length}`,
+            );
+            console.log(`Etapas Planejadas: ${aeronaveContexto.etapas.length}`);
+            console.log(
+              `Testes Homologados: ${aeronaveContexto.testes.length}`,
+            );
           }
           break;
 
-        case "teste":
-          const t = new Teste(TipoTeste.AERODINAMICO);
-          t.definirResultado(ResultadoTeste.APROVADO);
-          ger.adicionarTeste(t, usuarioLogado!);
-          aeronave.salvar();
-          console.log("[OK] Teste realizado.");
+        case "relatorio": {
+          if (usuarioLogado?.nivelPermissao === NivelPermissao.OPERADOR) {
+            console.log(
+              "\n[BLOQUEADO] Operadores não emitem relatórios finais.",
+            );
+            break;
+          }
+          if (!aeronaveContexto) {
+            console.log(
+              "\n[ERRO] Escolha uma aeronave ativa antes de exportar o relatório.",
+            );
+            break;
+          }
+          const conteudo = rel.gerarRelatorioAeronave(
+            aeronaveContexto,
+            "Malha Aérea S/A",
+            "17/05/2026",
+          );
+          rel.salvarRelatorio(aeronaveContexto, conteudo);
           break;
-
-        case "listar":
-          console.log("\n--- STATUS DA AERONAVE ---");
-          console.log(aeronave.exibirDetalhes());
-          break;
-
-        case "relatorio":
-          rel.gerar(aeronave);
-          break;
+        }
 
         default:
-          console.log("Comando não reconhecido.");
+          console.log("Comando não reconhecido pelo terminal AeroCode.");
       }
-    } catch (e: any) {
-      console.log("\n[ERRO]:", e.message);
+    } catch (err: any) {
+      console.log("\n[ERRO DE EXECUÇÃO]:", err.message);
     }
 
     iniciarMenu();

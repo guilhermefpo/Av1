@@ -3,3 +3,5 @@ export * from "./ResultadoTeste.js";
 export * from "./TipoAeronave.js";
 export * from "./TipoPeca.js";
 export * from "./TipoTeste.js";
+export * from "./StatusPeca.js";
+export * from "./StatusEtapa.js";

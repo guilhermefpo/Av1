@@ -1,50 +1,26 @@
 import * as fs from "fs";
-import { StatusPeca } from "../enums/StatusPeca.js";
-import { TipoPeca } from "../enums/TipoPeca.js";
+import { TipoPeca, StatusPeca } from "../enums/index.js";
 
 export default class Peca {
-  id: string;
-  nome: string;
-  tipo: TipoPeca;
-  fornecedor: string;
-  status: StatusPeca;
-
   constructor(
-    id: string,
-    nome: string,
-    tipo: TipoPeca,
-    fornecedor: string,
-    status: StatusPeca,
-  ) {
-    this.id = id;
-    this.nome = nome;
-    this.tipo = tipo;
-    this.fornecedor = fornecedor;
-    this.status = status;
-  }
+    public id: string,
+    public nome: string,
+    public tipo: TipoPeca,
+    public fornecedor: string,
+    public status: StatusPeca,
+  ) {}
 
-  get descricao() {
-    return `${this.nome} (${this.tipo}) - Fornecedor: ${this.fornecedor} | Status: ${this.status}`;
-  }
-
-  atualizarStatus(novoStatus: StatusPeca) {
-    if (this.status === StatusPeca.PRONTA && novoStatus !== StatusPeca.PRONTA) {
-      console.log("Aviso: Esta peça já consta como PRONTA PARA USO.");
-      return;
-    }
+  atualizarStatus(novoStatus: StatusPeca): void {
     this.status = novoStatus;
-    console.log(`Status da peça ${this.nome} atualizado para: ${novoStatus}`);
   }
 
-  salvar() {
-    const dados = JSON.stringify(this, null, 2);
-    try {
-      if (!fs.existsSync("./database/pecas")) {
-        fs.mkdirSync("./database/pecas", { recursive: true });
-      }
-      fs.writeFileSync(`./database/pecas/peca_${this.id}.txt`, dados, "utf-8");
-    } catch (err) {
-      console.error("Erro ao salvar peça:", err);
+  salvar(): void {
+    const data = `${this.id};${this.nome};${this.tipo};${this.fornecedor};${this.status}\n`;
+
+    if (!fs.existsSync("./data")) {
+      fs.mkdirSync("./data");
     }
+
+    fs.appendFileSync("./data/pecas.txt", data, "utf8");
   }
 }

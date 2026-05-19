@@ -1,62 +1,51 @@
-import * as fs from "fs"; // Para salvar os dados dos funcionários
-import { NivelPermissao } from "../enums/NivelPermissao.js";
+import * as fs from "fs";
+import { NivelPermissao } from "../enums/index.js";
 
 export default class Funcionario {
-  id: string;
-  nome: string;
-  telefone: string;
-  endereco: string;
-  usuario: string;
-  private senha: string;
-  private _nivelPermissao: NivelPermissao;
-
   constructor(
-    id: string,
-    nome: string,
-    telefone: string,
-    endereco: string,
-    usuario: string,
-    senha: string,
-    nivelPermissao: NivelPermissao,
-  ) {
-    this.id = id;
-    this.nome = nome;
-    this.telefone = telefone;
-    this.endereco = endereco;
-    this.usuario = usuario;
-    this.senha = senha;
-    this._nivelPermissao = nivelPermissao;
-  }
-
-  get nivelPermissao(): NivelPermissao {
-    return this._nivelPermissao;
-  }
+    public id: string,
+    public nome: string,
+    public telefone: string,
+    public endereco: string,
+    public usuario: string,
+    public senha: string,
+    public nivelPermissao: NivelPermissao,
+  ) {}
 
   autenticar(usuario: string, senha: string): boolean {
     return this.usuario === usuario && this.senha === senha;
   }
 
-  isAdmin(): boolean {
-    return this._nivelPermissao === NivelPermissao.ADMINISTRADOR;
-  }
+  salvar(): void {
+    const data = `${this.id};${this.nome};${this.telefone};${this.endereco};${this.usuario};${this.senha};${this.nivelPermissao}\n`;
 
-  salvar() {
-    const dados = JSON.stringify(this, null, 2);
-    try {
-      if (!fs.existsSync("./database/funcionarios")) {
-        fs.mkdirSync("./database/funcionarios", { recursive: true });
-      }
-      fs.writeFileSync(
-        `./database/funcionarios/func_${this.id}.txt`,
-        dados,
-        "utf-8",
-      );
-    } catch (err) {
-      console.error("Erro ao salvar funcionário:", err);
+    if (!fs.existsSync("./data")) {
+      fs.mkdirSync("./data");
     }
+
+    fs.appendFileSync("./data/funcionarios.txt", data, "utf8");
   }
 
-  exibirPerfil(): string {
-    return `ID: ${this.id} | Nome: ${this.nome} | Cargo: ${this._nivelPermissao}`;
+  static carregar(): Funcionario[] {
+    if (!fs.existsSync("./data/funcionarios.txt")) return [];
+
+    const linhas = fs
+      .readFileSync("./data/funcionarios.txt", "utf8")
+      .split("\n")
+      .filter((l) => l.trim());
+
+    return linhas.map((linha) => {
+      const [id, nome, tel, end, user, pass, nivel] = linha.split(";");
+
+      return new Funcionario(
+        id ?? "",
+        nome ?? "",
+        tel ?? "",
+        end ?? "",
+        user ?? "",
+        pass ?? "",
+        (nivel ?? "") as NivelPermissao,
+      );
+    });
   }
 }
