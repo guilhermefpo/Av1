@@ -66,38 +66,38 @@ dentro de uma **empresa aeronáutica**, utilizando um sistema simples baseado em
 # 📂 Estrutura do Projeto
 
 ```
-📦 project-root
-├── 📂 dist
-├── 📂 src
-│   ├── 📂 classes
-│   │   ├── 📄 Aeronave.ts
-│   │   ├── 📄 Peca.ts
-│   │   ├── 📄 Etapa.ts
-│   │   ├── 📄 Teste.ts
-│   │   ├── 📄 Funcionario.ts
-│   │   └── 📄 index.ts
-│   │
-│   ├── 📂 enums
-│   │   ├── 📄 NivelPermissao.ts
-│   │   ├── 📄 ResultadoTeste.ts
-│   │   ├── 📄 TipoAeronave.ts
-│   │   ├── 📄 TipoPeca.ts
-│   │   ├── 📄 TipoTeste.ts
-│   │   ├── 📄 StatusPeca.ts
-│   │   ├── 📄 StatusEtapa.ts
-│   │   ├── 📄 StatusTeste.ts
-│   │   └── 📄 index.ts
-│   │
-│   ├── 📂 sistema
-│   │   ├── 📄 GerenciadorAeronave.ts
-│   │   ├── 📄 Relatorio.ts
-│   │   └── 📄 index.ts
-│   │
-│   └── 📄 main.ts
-│
-├── 📄 tsconfig.json
-├── 📄 package.json
-└── 📄 README.md
+└── 📁 Av1
+    ├── 📁 src
+    │   ├── 📁 classes
+    │   │   ├── 📄 Aeronave.ts
+    │   │   ├── 📄 Etapa.ts
+    │   │   ├── 📄 Funcionario.ts
+    │   │   ├── 📄 Peca.ts
+    │   │   ├── 📄 Teste.ts
+    │   │   └── 📄 index.ts
+    │   ├── 📁 enums
+    │   │   ├── 📄 NivelPermissao.ts
+    │   │   ├── 📄 ResultadoTeste.ts
+    │   │   ├── 📄 StatusEtapa.ts
+    │   │   ├── 📄 StatusPeca.ts
+    │   │   ├── 📄 StatusTeste.ts
+    │   │   ├── 📄 TipoAeronave.ts
+    │   │   ├── 📄 TipoPeca.ts
+    │   │   ├── 📄 TipoTeste.ts
+    │   │   └── 📄 index.ts
+    │   ├── 📁 sistema
+    │   │   ├── 📄 GerenciadorAeronave.ts
+    │   │   ├── 📄 Relatorio.ts
+    │   │   └── 📄 index.ts
+    │   ├── 📁 utils
+    │   │   └── 📄 DetalhesAeronave.ts
+    │   └── 📄 main.ts
+    ├── ⚙️ .gitignore
+    ├── 📕 AEROCODE.pdf
+    ├── 📝 README.md
+    ├── ⚙️ package-lock.json
+    ├── ⚙️ package.json
+    └── ⚙️ tsconfig.json
 ```
 
 ⚠️ _A estrutura do projeto pode sofrer alterações futuras conforme o desenvolvimento._ <br>
@@ -110,39 +110,39 @@ dentro de uma **empresa aeronáutica**, utilizando um sistema simples baseado em
 
 # 🚀 Como Executar o Projeto
 
-### 1️⃣ Clonar o repositório
+### 1: Clonar o repositório
 
 ```bash
 git clone https://github.com/guilhermefpo/Av1.git
 ```
 
-### 2️⃣ Entrar na pasta do projeto
+### 2: Entrar na pasta do projeto
 
 ```bash
-cd av1_gerson
+cd .\Av1\
 ```
 
-### 3️⃣ Instalar as dependências
+### 3: Instalar as dependências
 
 ```bash
 npm i
 ```
 
-### 4️⃣ Executar o sistema
+### 4: Executar o sistema
 
 ```bash
-node dist/main.js
+npm run dev
 ```
 
-### 5️⃣ Logar no sistema
+### 5: Logar no sistema como administrador Mestre
 
 ```bash
-Usuário: admin
-Senha: admin
+Usuário: Guilherme
+Senha: senhaDeacesso
 
 ```
 
-### 5️⃣ Sair do login
+### 6: Sair do login
 
 > Realizar
 
@@ -150,7 +150,7 @@ Senha: admin
 ctrl + C
 ```
 
-⚠️ _Com o comando 5, você sairá do sistema completamente._ <br>
+⚠️ _Com o comando 6, você sairá do sistema completamente._ <br>
 ⚠️ _Ao logar e quiser sair, vai voltar para o login._ <br>
 ⚠️ _Todos os comandos fornecidos funcionaram no powershell e no cmd._ <br>
 
